@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بني سنتر | Boni Center - بني فون</title>
+    
+    <!-- Firebase SDKs المربوطة بمشروع abu-mlak -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --secondary: #0f172a;
+            --accent: #10b981;
+            --bg-light: #f8fafc;
+            --text-dark: #1e293b;
+            --border: #cbd5e1;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            direction: rtl;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--secondary), #1e293b);
+            color: white;
+            padding: 2.5rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.3rem;
+            color: #38bdf8;
+        }
+
+        header p {
+            margin-top: 0.5rem;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* شريط الحيلة التسويقية (العداد التفاعلي) */
+        .stats-banner {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
+        }
+
+        .auth-bar {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background-color: white;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 0.75rem 1.25rem;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            display: none;
+        }
+
+        .card.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        .conditional-box {
+            background-color: #f1f5f9;
+            border-right: 4px solid var(--primary);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .btn {
+            background-color: var(--accent);
+            color: white;
+            padding: 0.85rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.05rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #059669;
+        }
+
+        .btn-whatsapp {
+            background-color: #25d366;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        .btn-secondary {
+            background-color: #64748b;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            overflow-x: auto;
+            display: block;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            text-align: right;
+        }
+
+        th {
+            background-color: #f1f5f9;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: var(--secondary);
+            color: white;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>بني سنتر للخدمات الرقمية الذكية</h1>
+        <p>فتح حسابات بنكك وإدارة شبكات Starlink والميكروتك عن بُعد بكل ثقة وسرعة</p>
+    </header>
+
+    <div class="container">
+
+        <!-- العداد التفاعلي (الحيلة التسويقية) -->
+        <div class="stats-banner">
+            🔥 موثوقون من قِبل عملائنا | تم تنفيذ <span id="counterDisplay">79</span> طلباً بنجاح حتى الآن!
+        </div>
+
+        <!-- شريط الحساب والتسجيل -->
+        <div class="auth-bar">
+            <div id="userInfo">مرحباً بك في بني سنتر</div>
+            <div>
+                <button id="authBtn" class="tab-btn" onclick="openAuthModal()">تسجيل الحساب / دخول</button>
+            </div>
+        </div>
+
+        <!-- تبويبات الخدمات -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('bank')">💳 فتح حساب بنكك</button>
+            <button class="tab-btn" onclick="switchTab('starlink')">📡 خدمات Starlink</button>
+            <button class="tab-btn" onclick="switchTab('mikrotik')">⚙️ إدارة الميكروتك</button>
+            <button class="tab-btn" onclick="switchTab('myOrders')">📋 طلباتي المسجلة</button>
+        </div>
+
+        <!-- 1. نموذج فتح حساب بنكك -->
+        <div id="bank" class="card active">
+            <h2>خدمة فتح وتفعيل حساب "بنكك" عن بُعد</h2>
+            <p>اختر المستند الثبوتي المتوفر لديك لإتمام العملية من هاتفك بكل أمان:</p>
+
+            <div class="form-group">
+                <label>اختر المستند الثبوتي:</label>
+                <select id="bankDocType" onchange="handleBankDocChange()">
+                    <option value="">-- اختر المستند --</option>
+                    <option value="جواز سفر">جواز سفر</option>
+                    <option value="بطاقة قومية">بطاقة قومية</option>
+                    <option value="رقم وطني">رقم وطني</option>
+                </select>
+            </div>
+
+            <div id="nationalNumBox" class="conditional-box">
+                <div class="form-group">
+                    <label>حالة الرقم الوطني:</label>
+                    <select id="nationalStatus" onchange="handleNationalStatusChange()">
+                        <option value="">-- اختر حالة الرقم الوطني --</option>
+                        <option value="محدث وجاهز">الرقم الوطني محدث وجاهز</option>
+                        <option value="يحتاج إلى تحديث">أريد تحديث الرقم الوطني</option>
+                    </select>
+                </div>
+
+                <div id="updateChoiceBox" class="conditional-box">
+                    <div class="form-group">
+                        <label>كيف ترغب في تحديث الرقم الوطني؟</label>
+                        <select id="updateMethod">
+                            <option value="">-- اختر طريقة التحديث --</option>
+                            <option value="تحديث معنا وإكمال فتح الحساب">تحديث الرقم الوطني معكم وإكمال فتح الحساب</option>
+                            <option value="التحديث عبر السجل المدني">سأقوم بالتحديث بنفسي عبر السجل المدني</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn" onclick="submitBankOrder()">تأكيد وإرسال طلب فتح الحساب للواتساب</button>
+        </div>
+
+        <!-- 2. خدمة سداد Starlink -->
+        <div id="starlink" class="card">
+            <h2>سداد فاتورة واشتراك Starlink</h2>
+            <p>أدخل بيانات الحساب لسداد الاشتراك وإرسال الطلب فوراً:</p>
+
+            <div class="form-group">
+                <label>البريد الإلكتروني لحساب Starlink:</label>
+                <input type="email" id="starEmail" placeholder="example@gmail.com">
+            </div>
+
+            <div class="form-group">
+                <label>كلمة مرور حساب Starlink:</label>
+                <input type="password" id="starPass" placeholder="••••••••">
+            </div>
+
+            <div class="form-group">
+                <label>نوع الباقة المطلوبة:</label>
+                <select id="starPlan">
+                    <option value="باقة Roam الإقليمية">باقة Roam الإقليمية</option>
+                    <option value="باقة Mobile Priority">باقة Mobile Priority</option>
+                    <option value="تجديد اشتراك شهري">تجديد اشتراك شهري عام</option>
+                </select>
+            </div>
+
+            <button class="btn" onclick="submitStarlinkOrder()">تأكيد وإرسال طلب السداد للواتساب</button>
+        </div>
+
+        <!-- 3. إدارة راوتر الميكروتك -->
+        <div id="mikrotik" class="card">
+            <h2>إدارة وتهيئة راوتر MikroTik عن بُعد</h2>
+            <div class="form-group">
+                <label>نوع الخدمة المطلوبة:</label>
+                <select id="mikroType">
+                    <option value="ضبط إعدادات Starlink وتوزيع السرعات">ضبط إعدادات Starlink وتوزيع السرعات</option>
+                    <option value="إنشاء كروت هوتسبوت (Hotspot Vouchers)">إنشاء وتصميم كروت هوتسبوت (Hotspot Vouchers)</option>
+                    <option value="إصلاح مشكلة تقنية / حظر سرعات">إصلاح مشكلة تقنية / ضبط سيرفر</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>رابط WinBox Cloud أو AnyDesk (إن وجد):</label>
+                <input type="text" id="mikroLink" placeholder="xxxx.sn.mypurecloud.com أو رقم AnyDesk">
+            </div>
+            <button class="btn" onclick="submitMikrotikOrder()">إرسال طلب الميكروتك للواتساب</button>
+        </div>
+
+        <!-- 4. لوحة طلباتي للمستخدم -->
+        <div id="myOrders" class="card">
+            <h2>قائمة طلباتي المسجلة</h2>
+            <div id="userOrdersList">برجاء تسجيل الدخول أولاً لعرض طلباتك.</div>
+        </div>
+
+    </div>
+
+    <!-- نافذة تسجيل الدخول/إنشاء حساب -->
+    <div id="authModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:1000;">
+        <div style="background:white; padding:2rem; border-radius:12px; width:90%; max-width:400px;">
+            <h3>تسجيل الحساب في بني سنتر</h3>
+            <div class="form-group">
+                <label>الاسم الكامل:</label>
+                <input type="text" id="authName" placeholder="أدخل اسمك الكريم">
+            </div>
+            <div class="form-group">
+                <label>رقم الهاتف (الواتساب):</label>
+                <input type="text" id="authPhone" placeholder="0123456789">
+            </div>
+            <div class="form-group">
+                <label>كلمة المرور:</label>
+                <input type="password" id="authPass" placeholder="••••••••">
+            </div>
+            <button class="btn" onclick="processAuth()">حفظ وتأكيد الحساب</button>
+            <button class="btn btn-secondary" style="margin-top:0.5rem;" onclick="closeAuthModal()">إلغاء</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>جميع الحقوق محفوظة &copy; 2026 - بني سنتر | التواصل المباشر: 249113600735+</p>
+    </footer>
+
+    <script>
+        // --- تهيئة وقاعدة بيانات Firebase المربوطة بمشروع abu-mlak ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyAvkh8S_d19n5CVBMkBPpROsmESDlSZQ7Y",
+            authDomain: "abu-mlak.firebaseapp.com",
+            projectId: "abu-mlak",
+            storageBucket: "abu-mlak.firebasestorage.app",
+            messagingSenderId: "644796112437",
+            appId: "1:644796112437:web:dcde703197548199e85b7c",
+            databaseURL: "https://abu-mlak-default-rtdb.firebaseio.com"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        let currentUser = JSON.parse(localStorage.getItem('boni_user')) || null;
+        const ownerPhone = "249113600735";
+
+        // إدارة العداد التفاعلي (يبدأ من 79)
+        let totalOrdersCount = localStorage.getItem('boni_total_counter') || 79;
+        document.getElementById('counterDisplay').innerText = totalOrdersCount;
+
+        window.onload = function() {
+            updateAuthUI();
+        };
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+
+            if(tabId === 'myOrders') loadUserOrders();
+        }
+
+        function handleBankDocChange() {
+            let doc = document.getElementById('bankDocType').value;
+            document.getElementById('nationalNumBox').style.display = (doc === 'رقم وطني') ? 'block' : 'none';
+        }
+
+        function handleNationalStatusChange() {
+            let status = document.getElementById('nationalStatus').value;
+            document.getElementById('updateChoiceBox').style.display = (status === 'يحتاج إلى تحديث') ? 'block' : 'none';
+        }
+
+        function openAuthModal() {
+            document.getElementById('authModal').style.display = 'flex';
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').style.display = 'none';
+        }
+
+        function processAuth() {
+            let name = document.getElementById('authName').value;
+            let phone = document.getElementById('authPhone').value;
+            let pass = document.getElementById('authPass').value;
+
+            if(!name || !phone || !pass) {
+                alert('الرجاء تعبئة كافة الحقول');
+                return;
+            }
+
+            currentUser = { name: name, phone: phone };
+            localStorage.setItem('boni_user', JSON.stringify(currentUser));
+
+            // حفظ بيانات المستخدم المسجل في Firebase تلقائياً
+            db.ref('users/' + phone).set({
+                name: name,
+                phone: phone,
+                pass: pass,
+                registeredAt: new Date().toLocaleString('ar-EG')
+            });
+
+            updateAuthUI();
+            closeAuthModal();
+            alert('تم تسجيل حسابك بنجاح في قاعدة البيانات!');
+        }
+
+        function updateAuthUI() {
+            if(currentUser) {
+                document.getElementById('userInfo').innerHTML = `مرحباً بك، <b>${currentUser.name}</b> (${currentUser.phone})`;
+                document.getElementById('authBtn').innerText = 'تسجيل الخروج';
+                document.getElementById('authBtn').onclick = logout;
+            } else {
+                document.getElementById('userInfo').innerText = 'مرحباً بك في بني سنتر';
+                document.getElementById('authBtn').innerText = 'تسجيل الحساب / دخول';
+                document.getElementById('authBtn').onclick = openAuthModal;
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('boni_user');
+            currentUser = null;
+            updateAuthUI();
+            switchTab('bank');
+        }
+
+        function saveAndSendOrder(serviceName, detailsText) {
+            if(!currentUser) {
+                alert('عذراً، يجب تسجيل حسابك أولاً لنتمكن من إتمام طلبك');
+                openAuthModal();
+                return;
+            }
+
+            // زيادة العداد التسويقي
+            let currentCount = parseInt(localStorage.getItem('boni_total_counter')) || 79;
+            currentCount++;
+            localStorage.setItem('boni_total_counter', currentCount);
+            document.getElementById('counterDisplay').innerText = currentCount;
+
+            let orderId = 'ORD-' + Math.floor(Math.random() * 899999 + 100000);
+            let orderData = {
+                id: orderId,
+                service: serviceName,
+                details: detailsText,
+                userPhone: currentUser.phone,
+                userName: currentUser.name,
+                date: new Date().toLocaleString('ar-EG')
+            };
+
+            // 1. حفظ الطلب في Firebase السحابي
+            db.ref('orders/' + orderId).set(orderData);
+
+            // 2. حفظ الطلب محلياً
+            let orders = JSON.parse(localStorage.getItem('boni_orders')) || [];
+            orders.push(orderData);
+            localStorage.setItem('boni_orders', JSON.stringify(orders));
+
+            // 3. توجيه الطلب تلقائياً إلى واتساب الخاص بك
+            let waMsg = `📌 طلب جديد عبر بني سنتر:\n` +
+                        `🔹 رقم الطلب: ${orderId}\n` +
+                        `👤 العميل: ${currentUser.name}\n` +
+                        `📱 الهاتف: ${currentUser.phone}\n` +
+                        `⚙️ الخدمة: ${serviceName}\n` +
+                        `📝 التفاصيل: ${detailsText}`;
+
+            let waUrl = `https://wa.me/${ownerPhone}?text=` + encodeURIComponent(waMsg);
+            
+            window.open(waUrl, '_blank');
+            switchTab('myOrders');
+        }
+
+        function submitBankOrder() {
+            let doc = document.getElementById('bankDocType').value;
+            if(!doc) { alert('اختر نوع المستند أولاً'); return; }
+
+            let details = `المستند: ${doc}`;
+            if(doc === 'رقم وطني') {
+                let status = document.getElementById('nationalStatus').value;
+                details += ` | الحالة: ${status}`;
+                if(status === 'يحتاج إلى تحديث') {
+                    details += ` | الطريقة: ${document.getElementById('updateMethod').value}`;
+                }
+            }
+
+            saveAndSendOrder('فتح حساب بنكك', details);
+        }
+
+        function submitStarlinkOrder() {
+            let email = document.getElementById('starEmail').value;
+            let pass = document.getElementById('starPass').value;
+            let plan = document.getElementById('starPlan').value;
+
+            if(!email || !pass) { alert('يرجى كتابة البريد وكلمة المرور لسداد الاشتراكات'); return; }
+
+            saveAndSendOrder('سداد فاتورة Starlink', `الحساب: ${email} | المرور: ${pass} | الباقة: ${plan}`);
+        }
+
+        function submitMikrotikOrder() {
+            let type = document.getElementById('mikroType').value;
+            let link = document.getElementById('mikroLink').value;
+
+            saveAndSendOrder('إدارة الميكروتك', `الخدمة: ${type} | الرابط: ${link || 'غير مدخل'}`);
+        }
+
+        function loadUserOrders() {
+            if(!currentUser) {
+                document.getElementById('userOrdersList').innerHTML = 'برجاء تسجيل الدخول أولاً لعرض طلباتك.';
+                return;
+            }
+
+            let orders = JSON.parse(localStorage.getItem('boni_orders')) || [];
+            let myOrders = orders.filter(o => o.userPhone === currentUser.phone);
+
+            if(myOrders.length === 0) {
+                document.getElementById('userOrdersList').innerHTML = '<p>لا توجد طلبات مسجلة باسمك حتى الآن.</p>';
+                return;
+            }
+
+            let html = '<table><thead><tr><th>رقم الطلب</th><th>الخدمة</th><th>التفاصيل</th><th>التاريخ</th><th>إرسال للواتساب</th></tr></thead><tbody>';
+            myOrders.forEach(o => {
+                let waMsg = `مرحباً، أود متابعة طلبي:\nرقم الطلب: ${o.id}\nالخدمة: ${o.service}\nالتفاصيل: ${o.details}`;
+                let waLink = `https://wa.me/${ownerPhone}?text=` + encodeURIComponent(waMsg);
+
+                html += `<tr>
+                    <td><b>${o.id}</b></td>
+                    <td>${o.service}</td>
+                    <td>${o.details}</td>
+                    <td>${o.date}</td>
+                    <td><a href="${waLink}" target="_blank" class="btn-whatsapp">إرسال للواتساب 💬</a></td>
+                </tr>`;
+            });
+            html += '</tbody></table>';
+            document.getElementById('userOrdersList').innerHTML = html;
+        }
+    </script>
+</body>
+</html>
