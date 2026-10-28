@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بني سنتر | Boni Center - بني فون</title>
+    <title>بني سنتر | Boni Center - الخدمات الرقمية والذكية</title>
     
-    <!-- Firebase SDKs المربوطة بمشروع abu-mlak -->
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
@@ -55,7 +55,6 @@
             padding: 0 1rem;
         }
 
-        /* شريط الحيلة التسويقية (العداد التفاعلي) */
         .stats-banner {
             background: linear-gradient(135deg, #10b981, #059669);
             color: white;
@@ -146,6 +145,18 @@
             display: none;
         }
 
+        .price-info-box {
+            background-color: #ecfdf5;
+            border: 2px dashed #10b981;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            display: none;
+            color: #065f46;
+            font-size: 1.05rem;
+        }
+
         .btn {
             background-color: var(--accent);
             color: white;
@@ -211,14 +222,14 @@
 
     <header>
         <h1>بني سنتر للخدمات الرقمية الذكية</h1>
-        <p>فتح حسابات بنكك وإدارة شبكات Starlink والميكروتك عن بُعد بكل ثقة وسرعة</p>
+        <p>التوسع الجديد: السودان (الأبيض، بورتسودان، عطبرة، كوستي، الجزيرة، أم درمان، مروي) وخارج السودان</p>
     </header>
 
     <div class="container">
 
-        <!-- العداد التفاعلي (الحيلة التسويقية) -->
+        <!-- العداد التفاعلي -->
         <div class="stats-banner">
-            🔥 موثوقون من قِبل عملائنا | تم تنفيذ <span id="counterDisplay">79</span> طلباً بنجاح حتى الآن!
+            🔥 موثوقون في كل الولايات وخارج السودان | تم تنفيذ <span id="counterDisplay">79</span> طلباً بنجاح!
         </div>
 
         <!-- شريط الحساب والتسجيل -->
@@ -235,6 +246,7 @@
             <button class="tab-btn" onclick="switchTab('starlink')">📡 خدمات Starlink</button>
             <button class="tab-btn" onclick="switchTab('mikrotik')">⚙️ إدارة الميكروتك</button>
             <button class="tab-btn" onclick="switchTab('myOrders')">📋 طلباتي المسجلة</button>
+            <button class="tab-btn" id="adminTabBtn" style="display:none; background-color:#ef4444; color:white;" onclick="switchTab('admin')">👑 لوحة المدير</button>
         </div>
 
         <!-- 1. نموذج فتح حساب بنكك -->
@@ -246,10 +258,15 @@
                 <label>اختر المستند الثبوتي:</label>
                 <select id="bankDocType" onchange="handleBankDocChange()">
                     <option value="">-- اختر المستند --</option>
-                    <option value="جواز سفر">جواز سفر</option>
-                    <option value="بطاقة قومية">بطاقة قومية</option>
+                    <option value="جواز سفر">جواز سفر (السعر: 20 ألف)</option>
+                    <option value="بطاقة قومية">بطاقة قومية (السعر: 20 ألف)</option>
                     <option value="رقم وطني">رقم وطني</option>
                 </select>
+            </div>
+
+            <div id="priceInfoBox" class="price-info-box">
+                <span id="priceText"></span><br>
+                <b>رقم الحساب للتحويل:</b> 3624451 (باسم: بنيامين محمد سعيد إبراهيم)
             </div>
 
             <div id="nationalNumBox" class="conditional-box">
@@ -257,21 +274,45 @@
                     <label>حالة الرقم الوطني:</label>
                     <select id="nationalStatus" onchange="handleNationalStatusChange()">
                         <option value="">-- اختر حالة الرقم الوطني --</option>
-                        <option value="محدث وجاهز">الرقم الوطني محدث وجاهز</option>
-                        <option value="يحتاج إلى تحديث">أريد تحديث الرقم الوطني</option>
+                        <option value="محدث وجاهز">الرقم الوطني محدث وجاهز (السعر: 20 ألف)</option>
+                        <option value="يحتاج إلى تحديث">أريد تحديث الرقم الوطني وفتح الحساب (السعر: 120 ألف)</option>
                     </select>
                 </div>
+            </div>
 
-                <div id="updateChoiceBox" class="conditional-box">
-                    <div class="form-group">
-                        <label>كيف ترغب في تحديث الرقم الوطني؟</label>
-                        <select id="updateMethod">
-                            <option value="">-- اختر طريقة التحديث --</option>
-                            <option value="تحديث معنا وإكمال فتح الحساب">تحديث الرقم الوطني معكم وإكمال فتح الحساب</option>
-                            <option value="التحديث عبر السجل المدني">سأقوم بالتحديث بنفسي عبر السجل المدني</option>
-                        </select>
-                    </div>
+            <!-- خيارات الدفع المحدثة -->
+            <div class="form-group" style="margin-top: 1.5rem;">
+                <label>طريقة الدفع أو المتابعة:</label>
+                <select id="paymentChoice" onchange="handlePaymentChoice()">
+                    <option value="تحويل مباشر للإدارة">تحويل مباشر (حساب: 3624451)</option>
+                    <option value="دفع عبر وكيل الولاية">الدفع عبر الوكيل الخاص بولايتي / مدينتي</option>
+                    <option value="مناقشة أولاً">لا اريد الدفع اريد المناقشة اولا</option>
+                </select>
+            </div>
+
+            <!-- صندوق اختيار الولاية للوكيل -->
+            <div id="agentStateBox" class="conditional-box">
+                <div class="form-group">
+                    <label>اختر ولايتك أو منطقتك للتحويل عبر الوكيل:</label>
+                    <select id="agentLocation">
+                        <option value="">-- اختر الولاية / المدينة --</option>
+                        <option value="الأبيض">الأبيض (شمال كردفان)</option>
+                        <option value="بورتسودان">بورتسودان (ولاية البحر الأحمر)</option>
+                        <option value="عطبرة">عطبرة (نهر النيل)</option>
+                        <option value="كوستي">كوستي (النيل الأبيض)</option>
+                        <option value="الجزيرة">الجزيرة</option>
+                        <option value="أم درمان">أم درمان (الخرطوم)</option>
+                        <option value="مروي">مروي (الولاية الشمالية)</option>
+                        <option value="مصر">مصر (خارج السودان)</option>
+                        <option value="ليبيا">ليبيا (خارج السودان)</option>
+                    </select>
                 </div>
+            </div>
+
+            <!-- حقل إدخال رقم إشعار التحويل المباشر -->
+            <div id="receiptBox" class="form-group">
+                <label>رقم أو تفاصيل إشعار التحويل المباشر:</label>
+                <input type="text" id="receiptDetails" placeholder="أدخل رقم الإشعار أو تفاصيل التحويل">
             </div>
 
             <button class="btn" onclick="submitBankOrder()">تأكيد وإرسال طلب فتح الحساب للواتساب</button>
@@ -280,18 +321,14 @@
         <!-- 2. خدمة سداد Starlink -->
         <div id="starlink" class="card">
             <h2>سداد فاتورة واشتراك Starlink</h2>
-            <p>أدخل بيانات الحساب لسداد الاشتراك وإرسال الطلب فوراً:</p>
-
             <div class="form-group">
                 <label>البريد الإلكتروني لحساب Starlink:</label>
                 <input type="email" id="starEmail" placeholder="example@gmail.com">
             </div>
-
             <div class="form-group">
                 <label>كلمة مرور حساب Starlink:</label>
                 <input type="password" id="starPass" placeholder="••••••••">
             </div>
-
             <div class="form-group">
                 <label>نوع الباقة المطلوبة:</label>
                 <select id="starPlan">
@@ -300,7 +337,6 @@
                     <option value="تجديد اشتراك شهري">تجديد اشتراك شهري عام</option>
                 </select>
             </div>
-
             <button class="btn" onclick="submitStarlinkOrder()">تأكيد وإرسال طلب السداد للواتساب</button>
         </div>
 
@@ -328,9 +364,15 @@
             <div id="userOrdersList">برجاء تسجيل الدخول أولاً لعرض طلباتك.</div>
         </div>
 
+        <!-- 5. لوحة تحكم المدير -->
+        <div id="admin" class="card">
+            <h2>لوحة تحكم المدير</h2>
+            <div id="adminOrdersList">جاري جلب الطلبات من قاعدة البيانات...</div>
+        </div>
+
     </div>
 
-    <!-- نافذة تسجيل الدخول/إنشاء حساب -->
+    <!-- نافذة تسجيل الدخول -->
     <div id="authModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:1000;">
         <div style="background:white; padding:2rem; border-radius:12px; width:90%; max-width:400px;">
             <h3>تسجيل الحساب في بني سنتر</h3>
@@ -356,7 +398,6 @@
     </footer>
 
     <script>
-        // --- تهيئة وقاعدة بيانات Firebase المربوطة بمشروع abu-mlak ---
         const firebaseConfig = {
             apiKey: "AIzaSyAvkh8S_d19n5CVBMkBPpROsmESDlSZQ7Y",
             authDomain: "abu-mlak.firebaseapp.com",
@@ -373,7 +414,6 @@
         let currentUser = JSON.parse(localStorage.getItem('boni_user')) || null;
         const ownerPhone = "249113600735";
 
-        // إدارة العداد التفاعلي (يبدأ من 79)
         let totalOrdersCount = localStorage.getItem('boni_total_counter') || 79;
         document.getElementById('counterDisplay').innerText = totalOrdersCount;
 
@@ -389,16 +429,57 @@
             event.currentTarget.classList.add('active');
 
             if(tabId === 'myOrders') loadUserOrders();
+            if(tabId === 'admin') loadAdminOrders();
         }
 
         function handleBankDocChange() {
             let doc = document.getElementById('bankDocType').value;
-            document.getElementById('nationalNumBox').style.display = (doc === 'رقم وطني') ? 'block' : 'none';
+            let priceBox = document.getElementById('priceInfoBox');
+            let priceText = document.getElementById('priceText');
+            let natBox = document.getElementById('nationalNumBox');
+
+            natBox.style.display = 'none';
+
+            if(doc === 'جواز سفر' || doc === 'بطاقة قومية') {
+                priceBox.style.display = 'block';
+                priceText.innerHTML = `💰 <b>سعر الخدمة:</b> 20 ألف سوداني`;
+            } else if(doc === 'رقم وطني') {
+                priceBox.style.display = 'none';
+                natBox.style.display = 'block';
+            } else {
+                priceBox.style.display = 'none';
+            }
         }
 
         function handleNationalStatusChange() {
             let status = document.getElementById('nationalStatus').value;
-            document.getElementById('updateChoiceBox').style.display = (status === 'يحتاج إلى تحديث') ? 'block' : 'none';
+            let priceBox = document.getElementById('priceInfoBox');
+            let priceText = document.getElementById('priceText');
+
+            if(status === 'محدث وجاهز') {
+                priceBox.style.display = 'block';
+                priceText.innerHTML = `💰 <b>سعر الخدمة:</b> 20 ألف سوداني`;
+            } else if(status === 'يحتاج إلى تحديث') {
+                priceBox.style.display = 'block';
+                priceText.innerHTML = `💰 <b>سعر الخدمة (تحديث الرقم الوطني + فتح الحساب):</b> 120 ألف سوداني`;
+            } else {
+                priceBox.style.display = 'none';
+            }
+        }
+
+        function handlePaymentChoice() {
+            let choice = document.getElementById('paymentChoice').value;
+            let receiptBox = document.getElementById('receiptBox');
+            let agentBox = document.getElementById('agentStateBox');
+
+            receiptBox.style.display = 'none';
+            agentBox.style.display = 'none';
+
+            if(choice === 'تحويل مباشر للإدارة') {
+                receiptBox.style.display = 'block';
+            } else if(choice === 'دفع عبر وكيل الولاية') {
+                agentBox.style.display = 'block';
+            }
         }
 
         function openAuthModal() {
@@ -419,31 +500,34 @@
                 return;
             }
 
-            currentUser = { name: name, phone: phone };
+            currentUser = { name: name, phone: phone, isAdmin: (phone === ownerPhone || name.includes('بنيامين')) };
             localStorage.setItem('boni_user', JSON.stringify(currentUser));
 
-            // حفظ بيانات المستخدم المسجل في Firebase تلقائياً
             db.ref('users/' + phone).set({
                 name: name,
                 phone: phone,
-                pass: pass,
                 registeredAt: new Date().toLocaleString('ar-EG')
             });
 
             updateAuthUI();
             closeAuthModal();
-            alert('تم تسجيل حسابك بنجاح في قاعدة البيانات!');
+            alert('تم تسجيل حسابك بنجاح!');
         }
 
         function updateAuthUI() {
             if(currentUser) {
-                document.getElementById('userInfo').innerHTML = `مرحباً بك، <b>${currentUser.name}</b> (${currentUser.phone})`;
+                document.getElementById('userInfo').innerHTML = `مرحباً بك، <b>${currentUser.name}</b>`;
                 document.getElementById('authBtn').innerText = 'تسجيل الخروج';
                 document.getElementById('authBtn').onclick = logout;
+                
+                if(currentUser.phone === ownerPhone || currentUser.isAdmin) {
+                    document.getElementById('adminTabBtn').style.display = 'inline-block';
+                }
             } else {
                 document.getElementById('userInfo').innerText = 'مرحباً بك في بني سنتر';
                 document.getElementById('authBtn').innerText = 'تسجيل الحساب / دخول';
                 document.getElementById('authBtn').onclick = openAuthModal;
+                document.getElementById('adminTabBtn').style.display = 'none';
             }
         }
 
@@ -456,12 +540,11 @@
 
         function saveAndSendOrder(serviceName, detailsText) {
             if(!currentUser) {
-                alert('عذراً، يجب تسجيل حسابك أولاً لنتمكن من إتمام طلبك');
+                alert('عذراً، يجب تسجيل حسابك أولاً لنتمكن من إتمام طلبك وتوثيقه');
                 openAuthModal();
                 return;
             }
 
-            // زيادة العداد التسويقي
             let currentCount = parseInt(localStorage.getItem('boni_total_counter')) || 79;
             currentCount++;
             localStorage.setItem('boni_total_counter', currentCount);
@@ -474,18 +557,16 @@
                 details: detailsText,
                 userPhone: currentUser.phone,
                 userName: currentUser.name,
-                date: new Date().toLocaleString('ar-EG')
+                date: new Date().toLocaleString('ar-EG'),
+                status: 'قيد المعالجة'
             };
 
-            // 1. حفظ الطلب في Firebase السحابي
             db.ref('orders/' + orderId).set(orderData);
 
-            // 2. حفظ الطلب محلياً
             let orders = JSON.parse(localStorage.getItem('boni_orders')) || [];
             orders.push(orderData);
             localStorage.setItem('boni_orders', JSON.stringify(orders));
 
-            // 3. توجيه الطلب تلقائياً إلى واتساب الخاص بك
             let waMsg = `📌 طلب جديد عبر بني سنتر:\n` +
                         `🔹 رقم الطلب: ${orderId}\n` +
                         `👤 العميل: ${currentUser.name}\n` +
@@ -494,7 +575,6 @@
                         `📝 التفاصيل: ${detailsText}`;
 
             let waUrl = `https://wa.me/${ownerPhone}?text=` + encodeURIComponent(waMsg);
-            
             window.open(waUrl, '_blank');
             switchTab('myOrders');
         }
@@ -504,12 +584,28 @@
             if(!doc) { alert('اختر نوع المستند أولاً'); return; }
 
             let details = `المستند: ${doc}`;
+            let priceVal = "20 ألف سوداني";
+
             if(doc === 'رقم وطني') {
                 let status = document.getElementById('nationalStatus').value;
+                if(!status) { alert('اختر حالة الرقم الوطني أولاً'); return; }
                 details += ` | الحالة: ${status}`;
                 if(status === 'يحتاج إلى تحديث') {
-                    details += ` | الطريقة: ${document.getElementById('updateMethod').value}`;
+                    priceVal = "120 ألف سوداني";
                 }
+            }
+
+            let payChoice = document.getElementById('paymentChoice').value;
+            if(payChoice === 'مناقشة أولاً') {
+                details += ` | حالة الدفع: أريد المناقشة أولاً (بدون دفع مسبق)`;
+            } else if(payChoice === 'دفع عبر وكيل الولاية') {
+                let agentLoc = document.getElementById('agentLocation').value;
+                if(!agentLoc) { alert('الرجاء اختيار الولاية أو المنطقة للوكيل'); return; }
+                details += ` | السعر: ${priceVal} | طريقة الدفع: عبر وكيل الولاية (${agentLoc}) الحساب: 3624451 بنيامين محمد سعيد`;
+            } else {
+                let receipt = document.getElementById('receiptDetails').value;
+                if(!receipt) { alert('الرجاء إدخال تفاصيل أو رقم إشعار التحويل المباشر'); return; }
+                details += ` | السعر: ${priceVal} | حالة الدفع: تم الدفع المباشر | رقم الإشعار: ${receipt} | الحساب المحول إليه: 3624451 (بنيامين محمد سعيد إبراهيم)`;
             }
 
             saveAndSendOrder('فتح حساب بنكك', details);
@@ -520,15 +616,13 @@
             let pass = document.getElementById('starPass').value;
             let plan = document.getElementById('starPlan').value;
 
-            if(!email || !pass) { alert('يرجى كتابة البريد وكلمة المرور لسداد الاشتراكات'); return; }
-
+            if(!email || !pass) { alert('يرجى كتابة البريد وكلمة المرور'); return; }
             saveAndSendOrder('سداد فاتورة Starlink', `الحساب: ${email} | المرور: ${pass} | الباقة: ${plan}`);
         }
 
         function submitMikrotikOrder() {
             let type = document.getElementById('mikroType').value;
             let link = document.getElementById('mikroLink').value;
-
             saveAndSendOrder('إدارة الميكروتك', `الخدمة: ${type} | الرابط: ${link || 'غير مدخل'}`);
         }
 
@@ -561,6 +655,30 @@
             });
             html += '</tbody></table>';
             document.getElementById('userOrdersList').innerHTML = html;
+        }
+
+        function loadAdminOrders() {
+            db.ref('orders').once('value', (snapshot) => {
+                let data = snapshot.val();
+                if(!data) {
+                    document.getElementById('adminOrdersList').innerHTML = '<p>لا توجد طلبات في قاعدة البيانات السحابية حتى الآن.</p>';
+                    return;
+                }
+
+                let html = '<table><thead><tr><th>رقم الطلب</th><th>العميل</th><th>الهاتف</th><th>الخدمة</th><th>التفاصيل</th><th>التاريخ</th></tr></thead><tbody>';
+                Object.values(data).forEach(o => {
+                    html += `<tr>
+                        <td><b>${o.id}</b></td>
+                        <td>${o.userName}</td>
+                        <td>${o.userPhone}</td>
+                        <td>${o.service}</td>
+                        <td>${o.details}</td>
+                        <td>${o.date}</td>
+                    </tr>`;
+                });
+                html += '</tbody></table>';
+                document.getElementById('adminOrdersList').innerHTML = html;
+            });
         }
     </script>
 </body>
