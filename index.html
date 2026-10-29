@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بني سنتر | Boni Center - الخدمات الرقمية والذكية</title>
+    <title>بني سنتر | Boni Center - الخدمات الرقمية والذكية ونظام التحكم</title>
     
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <!-- Socket.io for Remote Control -->
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 
     <style>
         :root {
@@ -227,12 +229,10 @@
 
     <div class="container">
 
-        <!-- العداد التفاعلي -->
         <div class="stats-banner">
-            🔥 موثوقون في كل الولايات وخارج السودان | تم تنفيذ <span id="counterDisplay">79</span> طلباً بنجاح!
+            🔥 موثوقون في كل الولايات وخارج السودان | تم تنفيذ <span id="counterDisplay">80</span> طلباً بنجاح!
         </div>
 
-        <!-- شريط الحساب والتسجيل -->
         <div class="auth-bar">
             <div id="userInfo">مرحباً بك في بني سنتر</div>
             <div>
@@ -240,11 +240,11 @@
             </div>
         </div>
 
-        <!-- تبويبات الخدمات -->
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('bank')">💳 فتح حساب بنكك</button>
             <button class="tab-btn" onclick="switchTab('starlink')">📡 خدمات Starlink</button>
             <button class="tab-btn" onclick="switchTab('mikrotik')">⚙️ إدارة الميكروتك</button>
+            <button class="tab-btn" onclick="switchTab('remoteSupport')" style="border-color: #8b5cf6; color: #8b5cf6;">💻 نظام التحكم عن بُعد</button>
             <button class="tab-btn" onclick="switchTab('myOrders')">📋 طلباتي المسجلة</button>
             <button class="tab-btn" id="adminTabBtn" style="display:none; background-color:#ef4444; color:white;" onclick="switchTab('admin')">👑 لوحة المدير</button>
         </div>
@@ -280,7 +280,6 @@
                 </div>
             </div>
 
-            <!-- خيارات الدفع المحدثة -->
             <div class="form-group" style="margin-top: 1.5rem;">
                 <label>طريقة الدفع أو المتابعة:</label>
                 <select id="paymentChoice" onchange="handlePaymentChoice()">
@@ -290,7 +289,6 @@
                 </select>
             </div>
 
-            <!-- صندوق اختيار الولاية للوكيل -->
             <div id="agentStateBox" class="conditional-box">
                 <div class="form-group">
                     <label>اختر ولايتك أو منطقتك للتحويل عبر الوكيل:</label>
@@ -309,7 +307,6 @@
                 </div>
             </div>
 
-            <!-- حقل إدخال رقم إشعار التحويل المباشر -->
             <div id="receiptBox" class="form-group">
                 <label>رقم أو تفاصيل إشعار التحويل المباشر:</label>
                 <input type="text" id="receiptDetails" placeholder="أدخل رقم الإشعار أو تفاصيل التحويل">
@@ -358,13 +355,42 @@
             <button class="btn" onclick="submitMikrotikOrder()">إرسال طلب الميكروتك للواتساب</button>
         </div>
 
-        <!-- 4. لوحة طلباتي للمستخدم -->
+        <!-- 4. نظام التحكم عن بعد الخاص ببني سنتر (Boni Remote) -->
+        <div id="remoteSupport" class="card">
+            <h2>بوابة الدعم والتحكم عن بُعد (خاص بـ بني سنتر)</h2>
+            <p>اختر وضع الاستخدام (للعملاء أو للمهندس المدير):</p>
+            
+            <div style="display: flex; gap: 10px; margin-bottom: 1.5rem;">
+                <button class="tab-btn active" id="clientModeBtn" onclick="setRemoteMode('client')">وضع العميل (مشاركة الشاشة)</button>
+                <button class="tab-btn" id="adminModeBtn" onclick="setRemoteMode('admin')">وضع المهندس (معاينة وعرض)</button>
+            </div>
+
+            <!-- واجهة العميل -->
+            <div id="clientRemoteBox">
+                <p>إذا طلب منك المهندس مشاركة شاشتك، اضغط الزر أدناه وأعطه رقم الجلسة الذي سيظهر لك:</p>
+                <button class="btn" style="background-color: #8b5cf6;" onclick="startClientSharing()">بدء مشاركة الشاشة 📺</button>
+                <div id="clientSessionDisplay" style="margin-top: 15px; font-weight: bold; color: #0284c7; font-size: 1.1rem;"></div>
+                <video id="localVideoPreview" autoplay playsinline style="width: 100%; max-height: 250px; margin-top: 10px; background: #000; display: none; border-radius: 8px;"></video>
+            </div>
+
+            <!-- واجهة المدير / المهندس -->
+            <div id="adminRemoteBox" style="display: none;">
+                <div class="form-group">
+                    <label>أدخل رمز جلسة العميل:</label>
+                    <input type="text" id="targetSessionInput" placeholder="مثال: boni-4821">
+                </div>
+                <button class="btn" style="background-color: #ef4444;" onclick="connectToRemoteClient()">اتصال بعرض شاشة العميل 👁️‍🗨️</button>
+                <video id="remoteVideoViewer" autoplay playsinline style="width: 100%; max-height: 400px; margin-top: 15px; background: #000; border-radius: 8px;"></video>
+            </div>
+        </div>
+
+        <!-- 5. لوحة طلباتي للمستخدم -->
         <div id="myOrders" class="card">
             <h2>قائمة طلباتي المسجلة</h2>
             <div id="userOrdersList">برجاء تسجيل الدخول أولاً لعرض طلباتك.</div>
         </div>
 
-        <!-- 5. لوحة تحكم المدير -->
+        <!-- 6. لوحة تحكم المدير -->
         <div id="admin" class="card">
             <h2>لوحة تحكم المدير</h2>
             <div id="adminOrdersList">جاري جلب الطلبات من قاعدة البيانات...</div>
@@ -414,7 +440,7 @@
         let currentUser = JSON.parse(localStorage.getItem('boni_user')) || null;
         const ownerPhone = "249113600735";
 
-        let totalOrdersCount = localStorage.getItem('boni_total_counter') || 79;
+        let totalOrdersCount = localStorage.getItem('boni_total_counter') || 80;
         document.getElementById('counterDisplay').innerText = totalOrdersCount;
 
         window.onload = function() {
@@ -423,13 +449,107 @@
 
         function switchTab(tabId) {
             document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                if(!b.id.includes('adminTabBtn')) b.classList.remove('active');
+            });
             
             document.getElementById(tabId).classList.add('active');
             event.currentTarget.classList.add('active');
 
             if(tabId === 'myOrders') loadUserOrders();
             if(tabId === 'admin') loadAdminOrders();
+        }
+
+        // ==========================================
+        // إعدادات نظام التحكم عن بعد (رابط سيرفر ريندر الخاص بك)
+        // ==========================================
+        const signalingServerUrl = "https://boni-remote-server.onrender.com"; 
+        
+        let socket = null;
+        let activeRoom = "boni-" + Math.floor(Math.random() * 8999 + 1000);
+
+        function setRemoteMode(mode) {
+            if(mode === 'client') {
+                document.getElementById('clientRemoteBox').style.display = 'block';
+                document.getElementById('adminRemoteBox').style.display = 'none';
+                document.getElementById('clientModeBtn').classList.add('active');
+                document.getElementById('adminModeBtn').classList.remove('active');
+            } else {
+                document.getElementById('clientRemoteBox').style.display = 'none';
+                document.getElementById('adminRemoteBox').style.display = 'block';
+                document.getElementById('adminModeBtn').classList.add('active');
+                document.getElementById('clientModeBtn').classList.remove('active');
+            }
+        }
+
+        async function startClientSharing() {
+            try {
+                const stream = await navigator.mediaDevices.getDisplayMedia({ video: { cursor: "always" }, audio: false });
+                const videoEl = document.getElementById('localVideoPreview');
+                videoEl.style.display = 'block';
+                videoEl.srcObject = stream;
+
+                document.getElementById('clientSessionDisplay').innerHTML = `✅ تم فتح الجلسة بنجاح!<br><b>أعطِ هذا الرمز للمهندس:</b> <span style="color:red; font-size:1.3rem;">${activeRoom}</span>`;
+
+                // الاتصال بسيرفر الوساطة
+                socket = io(signalingServerUrl);
+                socket.emit('join-room', activeRoom);
+
+                const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
+                stream.getTracks().forEach(track => pc.addTrack(track, stream));
+
+                pc.onicecandidate = e => {
+                    if (e.candidate) socket.emit('ice-candidate', { candidate: e.candidate, room: activeRoom });
+                };
+
+                const offer = await pc.createOffer();
+                await pc.setLocalDescription(offer);
+                socket.emit('offer', { offer: offer, room: activeRoom });
+
+                socket.on('answer', async ans => {
+                    await pc.setRemoteDescription(new RTCSessionDescription(ans));
+                });
+
+                socket.on('ice-candidate', async cand => {
+                    await pc.addIceCandidate(new RTCIceCandidate(cand));
+                });
+
+            } catch (err) {
+                alert('عذراً، لم يتم منح إذن مشاركة الشاشة.');
+                console.error(err);
+            }
+        }
+
+        async function connectToRemoteClient() {
+            let targetRoom = document.getElementById('targetSessionInput').value;
+            if(!targetRoom) { alert('الرجاء إدخال رمز جلسة العميل'); return; }
+
+            socket = io(signalingServerUrl);
+            socket.emit('join-room', targetRoom);
+
+            const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
+
+            pc.ontrack = e => {
+                const remoteVideo = document.getElementById('remoteVideoViewer');
+                remoteVideo.srcObject = e.streams[0];
+            };
+
+            pc.onicecandidate = e => {
+                if (e.candidate) socket.emit('ice-candidate', { candidate: e.candidate, room: targetRoom });
+            };
+
+            socket.on('offer', async offer => {
+                await pc.setRemoteDescription(new RTCSessionDescription(offer));
+                const answer = await pc.createAnswer();
+                await pc.setLocalDescription(answer);
+                socket.emit('answer', { answer: answer, room: targetRoom });
+            });
+
+            socket.on('ice-candidate', async cand => {
+                await pc.addIceCandidate(new RTCIceCandidate(cand));
+            });
+
+            alert('جاري الاتصال بجهاز العميل...');
         }
 
         function handleBankDocChange() {
@@ -545,7 +665,7 @@
                 return;
             }
 
-            let currentCount = parseInt(localStorage.getItem('boni_total_counter')) || 79;
+            let currentCount = parseInt(localStorage.getItem('boni_total_counter')) || 80;
             currentCount++;
             localStorage.setItem('boni_total_counter', currentCount);
             document.getElementById('counterDisplay').innerText = currentCount;
