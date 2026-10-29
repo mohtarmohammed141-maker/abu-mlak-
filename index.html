@@ -3,114 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بني سنتر | Boni Center - الخدمات الرقمية والذكية ونظام التحكم</title>
+    <title>بني سنتر | Boni Center - المنصة الرقمية والتطبيق الذكي</title>
     
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-    <!-- Socket.io for Remote Control -->
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 
     <style>
         :root {
-            --primary: #0284c7;
-            --primary-dark: #0369a1;
-            --secondary: #0f172a;
-            --accent: #10b981;
-            --bg-light: #f8fafc;
-            --text-dark: #1e293b;
-            --border: #cbd5e1;
+            --bg-dark: #07090e;
+            --card-bg: rgba(17, 24, 39, 0.75);
+            --accent-glow: #38bdf8;
+            --accent-green: #10b981;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.08);
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: var(--bg-light);
-            color: var(--text-dark);
+            background-color: var(--bg-dark);
+            color: var(--text-light);
             direction: rtl;
+            min-height: 100vh;
+        }
+
+        /* خلفية إضاءة محيطية عصرية */
+        .ambient-glow {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, rgba(16, 185, 129, 0.05) 50%, transparent 80%);
+            z-index: -1;
+            pointer-events: none;
         }
 
         header {
-            background: linear-gradient(135deg, var(--secondary), #1e293b);
-            color: white;
-            padding: 2.5rem 1rem;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem 1rem;
             text-align: center;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
         }
 
         header h1 {
             margin: 0;
-            font-size: 2.3rem;
-            color: #38bdf8;
+            font-size: 2rem;
+            color: var(--accent-glow);
+            letter-spacing: 0.5px;
         }
 
         header p {
-            margin-top: 0.5rem;
-            opacity: 0.9;
-            font-size: 1.1rem;
+            margin-top: 0.4rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
         }
 
         .container {
-            max-width: 900px;
-            margin: 2rem auto;
+            max-width: 950px;
+            margin: 1.5rem auto;
             padding: 0 1rem;
         }
 
         .stats-banner {
-            background: linear-gradient(135deg, #10b981, #059669);
+            background: linear-gradient(135deg, #059669, #10b981);
             color: white;
-            padding: 1rem;
-            border-radius: 10px;
+            padding: 0.8rem;
+            border-radius: 12px;
             text-align: center;
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: bold;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
+            margin-bottom: 1.2rem;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.2);
         }
 
         .auth-bar {
-            background: white;
-            padding: 1rem;
-            border-radius: 8px;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            padding: 0.9rem 1.2rem;
+            border-radius: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 1.2rem;
             flex-wrap: wrap;
             gap: 10px;
         }
 
         .tabs {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             margin-bottom: 1.5rem;
-            flex-wrap: wrap;
+            overflow-x: auto;
+            padding-bottom: 5px;
         }
 
         .tab-btn {
-            background-color: white;
-            border: 2px solid var(--primary);
-            color: var(--primary);
-            padding: 0.75rem 1.25rem;
-            font-size: 1rem;
-            font-weight: bold;
-            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 0.55rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 10px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.25s ease;
+            white-space: nowrap;
         }
 
         .tab-btn.active, .tab-btn:hover {
-            background-color: var(--primary);
-            color: white;
+            background-color: var(--accent-glow);
+            color: #0f172a;
+            border-color: var(--accent-glow);
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
         }
 
         .card {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            padding: 1.8rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             display: none;
         }
 
@@ -118,62 +139,139 @@
             display: block;
         }
 
+        /* تنسيق شبكة الأيقونات والخدمات بشكل أنيق ومضغوط غير ضخم */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .s-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border-color);
+            padding: 12px 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .s-card:hover {
+            border-color: var(--accent-glow);
+            transform: translateY(-2px);
+            background: rgba(30, 41, 59, 0.85);
+        }
+
+        .s-card span {
+            font-size: 22px;
+            background: rgba(56, 189, 248, 0.1);
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .s-card p {
+            margin: 0;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
         .form-group {
-            margin-bottom: 1.2rem;
+            margin-bottom: 1.1rem;
         }
 
         label {
             display: block;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            color: var(--text-muted);
+            font-size: 13px;
         }
 
-        input, select {
+        input, select, textarea {
             width: 100%;
-            padding: 0.8rem;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 1rem;
+            padding: 0.75rem;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-color);
+            color: white;
+            border-radius: 10px;
+            font-size: 0.95rem;
             box-sizing: border-box;
+            transition: 0.25s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--accent-glow);
+            outline: none;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+        }
+
+        .filter-box {
+            background: rgba(56, 189, 248, 0.05);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
         }
 
         .conditional-box {
-            background-color: #f1f5f9;
-            border-right: 4px solid var(--primary);
+            background: rgba(15, 23, 42, 0.5);
+            border-right: 4px solid var(--accent-glow);
             padding: 1rem;
-            border-radius: 6px;
+            border-radius: 10px;
             margin-top: 1rem;
             display: none;
         }
 
         .price-info-box {
-            background-color: #ecfdf5;
-            border: 2px dashed #10b981;
-            padding: 1rem;
-            border-radius: 8px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px dashed var(--accent-green);
+            padding: 0.9rem;
+            border-radius: 10px;
             margin-top: 1rem;
             margin-bottom: 1rem;
             display: none;
-            color: #065f46;
-            font-size: 1.05rem;
+            color: #34d399;
+            font-size: 0.95rem;
         }
 
         .btn {
-            background-color: var(--accent);
-            color: white;
-            padding: 0.85rem 1.5rem;
+            background: linear-gradient(135deg, var(--accent-glow), #0284c7);
+            color: #0f172a;
+            padding: 0.8rem 1.5rem;
             border: none;
-            border-radius: 6px;
-            font-size: 1.05rem;
+            border-radius: 10px;
+            font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
             width: 100%;
-            transition: background 0.2s;
+            transition: all 0.25s;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.25);
         }
 
         .btn:hover {
-            background-color: #059669;
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-apk {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
         }
 
         .btn-whatsapp {
@@ -181,7 +279,7 @@
             color: white;
             padding: 0.5rem 1rem;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
             text-decoration: none;
@@ -190,67 +288,274 @@
         }
 
         .btn-secondary {
-            background-color: #64748b;
+            background-color: #475569;
+            color: white;
+        }
+
+        .market-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 16px;
+            margin-top: 15px;
+        }
+
+        .market-card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .market-card img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background: #1e293b;
+        }
+
+        .state-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--accent-glow);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .video-box {
+            width: 100%;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin-top: 12px;
+            background: #000;
+            overflow: hidden;
+        }
+
+        video {
+            width: 100%;
+            display: block;
+        }
+
+        /* تنسيق الروبوت التفاعلي */
+        .robot-container {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .robot-bubble {
+            background: #0f172a;
+            color: var(--accent-glow);
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 8px;
+            border: 1px solid var(--border-color);
+        }
+        .robot-avatar {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto;
+            background: #1e293b;
+            border-radius: 14px;
+            border: 2px solid var(--accent-glow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 1rem;
-            overflow-x: auto;
-            display: block;
         }
 
         th, td {
             padding: 0.75rem;
-            border: 1px solid var(--border);
+            border: 1px solid var(--border-color);
             text-align: right;
+            font-size: 13px;
         }
 
         th {
-            background-color: #f1f5f9;
+            background-color: rgba(30, 41, 59, 0.8);
+            color: var(--accent-glow);
         }
 
         footer {
             text-align: center;
             padding: 1.5rem;
-            background-color: var(--secondary);
-            color: white;
+            background: rgba(15, 23, 42, 0.9);
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
             margin-top: 3rem;
+            font-size: 12px;
         }
     </style>
 </head>
 <body>
 
+    <div class="ambient-glow"></div>
+
     <header>
-        <h1>بني سنتر للخدمات الرقمية الذكية</h1>
-        <p>التوسع الجديد: السودان (الأبيض، بورتسودان، عطبرة، كوستي، الجزيرة، أم درمان، مروي) وخارج السودان</p>
+        <h1>بني سنتر | Boni Center</h1>
+        <p>المنصة الرقمية المتكاملة وسوق الخدمات الذكية</p>
     </header>
 
     <div class="container">
 
         <div class="stats-banner">
-            🔥 موثوقون في كل الولايات وخارج السودان | تم تنفيذ <span id="counterDisplay">80</span> طلباً بنجاح!
+            🔥 تغطية شاملة لجميع الولايات وخارج السودان | تم تنفيذ <span id="counterDisplay">80</span> طلباً بنجاح!
         </div>
 
         <div class="auth-bar">
             <div id="userInfo">مرحباً بك في بني سنتر</div>
-            <div>
-                <button id="authBtn" class="tab-btn" onclick="openAuthModal()">تسجيل الحساب / دخول</button>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button class="tab-btn" style="border-color: #10b981; color: #10b981;" onclick="switchTab('downloadApp')">📲 تحميل التطبيق</button>
+                <button id="authBtn" class="tab-btn" onclick="openAuthModal('login')">تسجيل الدخول / حساب جديد</button>
             </div>
         </div>
 
+        <!-- التبويبات الرئيسية -->
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('bank')">💳 فتح حساب بنكك</button>
-            <button class="tab-btn" onclick="switchTab('starlink')">📡 خدمات Starlink</button>
-            <button class="tab-btn" onclick="switchTab('mikrotik')">⚙️ إدارة الميكروتك</button>
-            <button class="tab-btn" onclick="switchTab('remoteSupport')" style="border-color: #8b5cf6; color: #8b5cf6;">💻 نظام التحكم عن بُعد</button>
-            <button class="tab-btn" onclick="switchTab('myOrders')">📋 طلباتي المسجلة</button>
-            <button class="tab-btn" id="adminTabBtn" style="display:none; background-color:#ef4444; color:white;" onclick="switchTab('admin')">👑 لوحة المدير</button>
+            <button class="tab-btn active" onclick="switchTab('servicesHub')">🚀 الخدمات والأيقونات</button>
+            <button class="tab-btn" onclick="switchTab('downloadApp')">📲 تطبيق APK والشرح</button>
+            <button class="tab-btn" onclick="switchTab('market')">🛒 سوق الخدمات</button>
+            <button class="tab-btn" onclick="switchTab('bank')">💳 فتح حساب بنكك</button>
+            <button class="tab-btn" onclick="switchTab('starlink')">📡 Starlink</button>
+            <button class="tab-btn" onclick="switchTab('mikrotik')">⚙️ الميكروتك</button>
+            <button class="tab-btn" onclick="switchTab('networkTool')">📶 محدد الشبكة</button>
+            <button class="tab-btn" onclick="switchTab('remoteSupport')" style="color: #a78bfa; border-color: rgba(167, 139, 250, 0.4);">💻 التحكم عن بُعد</button>
+            <button class="tab-btn" onclick="switchTab('myOrders')">📋 طلباتي</button>
+            <button class="tab-btn" id="adminTabBtn" style="display:none; background-color:#ef4444; color:white;" onclick="switchTab('admin')">👑 الإدارة</button>
         </div>
 
-        <!-- 1. نموذج فتح حساب بنكك -->
-        <div id="bank" class="card active">
+        <!-- 0. مركز الخدمات والأيقونات المرتبة بعناية -->
+        <div id="servicesHub" class="card active">
+            <h2>قسم الخدمات السريعة والأيقونات المتاحة</h2>
+            <p>اختر الخدمة المطلوبة ليتم تحويلك وإرسال طلبك مباشرة عبر الواتساب:</p>
+            
+            <div class="grid">
+                <div class="s-card" onclick="openGameTopup()"><span>🎯</span><p>شحن ألعاب الحرب</p></div>
+                <div class="s-card" onclick="openAccountsMarket()"><span>🎮</span><p>سوق الحسابات</p></div>
+                <div class="s-card" onclick="openOnlinePhoneServices()"><span>🌐</span><p>خدمات هواتف</p></div>
+                <div class="s-card" onclick="openMikrotikServices()"><span>📡</span><p>برمجة ميكروتيك</p></div>
+                <div class="s-card" onclick="openEnglishLearning()"><span>🇬🇧</span><p>تعلم الإنجليزية</p></div>
+                <div class="s-card" onclick="requestApkApp()"><span>📲</span><p>تطبيقات APK</p></div>
+                <div class="s-card" onclick="processService('شراء كروت شبكة')"><span>🎫</span><p>كروت شبكة</p></div>
+                <div class="s-card" onclick="processService('تحويل رصيد')"><span>💸</span><p>تحويل رصيد</p></div>
+                <div class="s-card" onclick="processService('خدمة بنكك')"><span>🏦</span><p>خدمة بنكك</p></div>
+                <div class="s-card" onclick="processService('خدمة كاش')"><span>💰</span><p>خدمات كاش</p></div>
+                <div class="s-card" onclick="processService('دفع فواتير ستارلينك')"><span>🛰️</span><p>ستارلينك</p></div>
+                <div class="s-card" onclick="openNetworkSettings()"><span>📶</span><p>ضبط الإنترنت</p></div>
+                <div class="s-card" onclick="processService('تصميم لوغو احترافي')"><span>🎨</span><p>تصميم لوغو</p></div>
+                <div class="s-card" onclick="switchTab('networkTool')" style="border-color: #22c55e;"><span style="background: rgba(34, 197, 94, 0.15); color: #22c55e;">📶</span><p style="color: #22c55e;">محدد الشبكة</p></div>
+            </div>
+        </div>
+
+        <!-- قسم تحميل التطبيق APK وفيديو الشرح -->
+        <div id="downloadApp" class="card">
+            <h2>📲 تحميل تطبيق "بني سنتر" الرسمي (APK)</h2>
+            <p>استمتع بتجربة أسرع عبر تثبيت التطبيق مباشرة على هاتفك الأندرويد:</p>
+
+            <div style="text-align: center; margin: 1.2rem 0;">
+                <a href="https://github.com/benifone/benifone.github.io/raw/main/BoniCenter.apk" class="btn btn-apk" style="padding: 0.8rem 2rem; width: auto; font-size: 1rem;" download>
+                    ⬇️ تحميل تطبيق بني سنتر APK المباشر
+                </a>
+            </div>
+
+            <hr style="border-color: var(--border-color); margin: 1.5rem 0;">
+
+            <h3>📹 فيديو الشرح التوضيحي (خطوات التثبيت):</h3>
+            <p>شاهد الفيديو التالي لمعرفة طريقة تثبيت التطبيق وتجاوز قيود المصادر المجهولة:</p>
+
+            <div class="video-box">
+                <video controls poster="https://images.unsplash.com/photo-1616469829941-c7200edec809?w=800">
+                    <source src="فيديو_التثبيت_الخاص_بك.mp4" type="video/mp4">
+                    متصفحك لا يدعم تشغيل الفيديو المباشر. يرجى وضع ملف الفيديو بصيغة MP4 في مجلد المشروع.
+                </video>
+            </div>
+        </div>
+
+        <!-- 1. سوق الخدمات الرقمية بالولايات -->
+        <div id="market" class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 1rem;">
+                <h2>سوق بني سنتر المفتوح حسب الولايات</h2>
+                <button class="btn" style="width: auto; padding: 0.6rem 1rem; font-size: 0.9rem;" onclick="toggleAddServiceForm()">+ عرض خدمة / منتج</button>
+            </div>
+
+            <div class="filter-box">
+                <label style="margin:0; white-space:nowrap;">📌 تصفية حسب الولاية:</label>
+                <select id="filterState" onchange="loadMarketItems()" style="flex: 1; min-width: 180px;">
+                    <option value="الكل">🌐 جميع الولايات والمدن</option>
+                    <option value="الأبيض">الأبيض (شمال كردفان)</option>
+                    <option value="بورتسودان">بورتسودان (البحر الأحمر)</option>
+                    <option value="عطبرة">عطبرة (نهر النيل)</option>
+                    <option value="كوستي">كوستي (النيل الأبيض)</option>
+                    <option value="الجزيرة">الجزيرة</option>
+                    <option value="أم درمان">أم درمان (الخرطوم)</option>
+                    <option value="مروي">مروي (الولاية الشمالية)</option>
+                    <option value="مصر">مصر (خارج السودان)</option>
+                    <option value="ليبيا">ليبيا (خارج السودان)</option>
+                </select>
+            </div>
+
+            <div id="addServiceBox" class="conditional-box" style="margin-bottom: 1.5rem;">
+                <h3>إضافة خدمة / منتج جديد للسوق</h3>
+                <div class="form-group">
+                    <label>الولاية / المنطقة الخاصة بالخدمة:</label>
+                    <select id="marketState">
+                        <option value="الأبيض">الأبيض (شمال كردفان)</option>
+                        <option value="بورتسودان">بورتسودان (البحر الأحمر)</option>
+                        <option value="عطبرة">عطبرة (نهر النيل)</option>
+                        <option value="كوستي">كوستي (النيل الأبيض)</option>
+                        <option value="الجزيرة">الجزيرة</option>
+                        <option value="أم درمان">أم درمان (الخرطوم)</option>
+                        <option value="مروي">مروي (الولاية الشمالية)</option>
+                        <option value="مصر">مصر (خارج السودان)</option>
+                        <option value="ليبيا">ليبيا (خارج السودان)</option>
+                        <option value="عامة">خدمة عامة لكافة المناطق</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>اسم الخدمة أو المنتج:</label>
+                    <input type="text" id="marketTitle" placeholder="مثال: كروت هوتسبوت، صيانة هواتف">
+                </div>
+                <div class="form-group">
+                    <label>صورة المنتج (من الاستوديو أو الكاميرا):</label>
+                    <input type="file" id="marketImageFile" accept="image/*" style="background: rgba(15,23,42,0.6); padding: 5px;">
+                </div>
+                <div class="form-group">
+                    <label>الوصف التفصيلي:</label>
+                    <textarea id="marketDesc" rows="2" placeholder="اكتب تفاصيل وشروط الخدمة..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>السعر المطلوب:</label>
+                    <input type="text" id="marketPrice" placeholder="مثال: 20,000 سوداني">
+                </div>
+                <div class="form-group">
+                    <label>رقم التواصل/الواتساب للبائع:</label>
+                    <input type="text" id="marketPhone" placeholder="0123456789">
+                </div>
+                <button class="btn" onclick="publishMarketItem()">نشر الخدمة في السوق 🚀</button>
+            </div>
+
+            <div id="marketGrid" class="market-grid"></div>
+        </div>
+
+        <!-- 2. نموذج فتح حساب بنكك -->
+        <div id="bank" class="card">
             <h2>خدمة فتح وتفعيل حساب "بنكك" عن بُعد</h2>
             <p>اختر المستند الثبوتي المتوفر لديك لإتمام العملية من هاتفك بكل أمان:</p>
 
@@ -280,7 +585,7 @@
                 </div>
             </div>
 
-            <div class="form-group" style="margin-top: 1.5rem;">
+            <div class="form-group" style="margin-top: 1rem;">
                 <label>طريقة الدفع أو المتابعة:</label>
                 <select id="paymentChoice" onchange="handlePaymentChoice()">
                     <option value="تحويل مباشر للإدارة">تحويل مباشر (حساب: 3624451)</option>
@@ -312,10 +617,10 @@
                 <input type="text" id="receiptDetails" placeholder="أدخل رقم الإشعار أو تفاصيل التحويل">
             </div>
 
-            <button class="btn" onclick="submitBankOrder()">تأكيد وإرسال طلب فتح الحساب للواتساب</button>
+            <button class="btn" onclick="submitBankOrder()" style="margin-top: 1rem;">تأكيد وإرسال طلب فتح الحساب للواتساب</button>
         </div>
 
-        <!-- 2. خدمة سداد Starlink -->
+        <!-- 3. خدمة سداد Starlink -->
         <div id="starlink" class="card">
             <h2>سداد فاتورة واشتراك Starlink</h2>
             <div class="form-group">
@@ -337,7 +642,7 @@
             <button class="btn" onclick="submitStarlinkOrder()">تأكيد وإرسال طلب السداد للواتساب</button>
         </div>
 
-        <!-- 3. إدارة راوتر الميكروتك -->
+        <!-- 4. إدارة راوتر الميكروتك -->
         <div id="mikrotik" class="card">
             <h2>إدارة وتهيئة راوتر MikroTik عن بُعد</h2>
             <div class="form-group">
@@ -355,12 +660,41 @@
             <button class="btn" onclick="submitMikrotikOrder()">إرسال طلب الميكروتك للواتساب</button>
         </div>
 
-        <!-- 4. نظام التحكم عن بعد الخاص ببني سنتر (Boni Remote) -->
+        <!-- 5. محدد الشبكة والمنطقة الذكي -->
+        <div id="networkTool" class="card">
+            <div style="background:rgba(15, 23, 42, 0.7); border:1px solid var(--border-color); border-radius:14px; padding:1.5rem; text-align:right;">
+                <h2 style="color:var(--accent-glow); text-align:center; margin-top:0;">محدد الشبكة والشريحة الأنسب حسب منطقتك</h2>
+                <p style="text-align:center; color:var(--text-muted); font-size:12px; margin-bottom:1.2rem;">حدد ولايتك الحالية أو دولتك لمعرفة الشبكة الأقوى وأفضل تغطية إنترنت متاحة:</p>
+
+                <div class="form-group">
+                    <label style="color:var(--accent-glow);">اختر منطقتك أو ولايتك الحالية:</label>
+                    <select id="userRegionSelect">
+                        <option value="الابيض">الأبيض (شمال كردفان - السودان)</option>
+                        <option value="الخرطوم">الخرطوم / أم درمان (السودان)</option>
+                        <option value="بورتسودان">بورتسودان (البحر الأحمر - السودان)</option>
+                        <option value="عطبرة">عطبرة (نهر النيل - السودان)</option>
+                        <option value="كوستي">كوستي (النيل الأبيض - السودان)</option>
+                        <option value="مصر">مصر (خارج السودان)</option>
+                        <option value="ليبيا">ليبيا (خارج السودان)</option>
+                        <option value="اخري">دولة أو منطقة أخرى</option>
+                    </select>
+                </div>
+
+                <div id="regionResultBox" style="margin: 15px 0; background: rgba(30, 41, 59, 0.8); padding: 12px; border-radius: 10px; display:none;">
+                    <div>📶 <b>الشبكة الأقوى المقترحة لمنطقتك:</b> <span id="bestNetResult" style="color:#22c55e; font-weight:bold;">--</span></div>
+                    <div style="margin-top:6px; color:var(--text-muted); font-size:13px;">📊 <b>حالة التغطية والسرعة المتوقعة:</b> <span id="netQualityResult" style="color:var(--accent-glow);">--</span></div>
+                </div>
+
+                <button class="btn" onclick="checkRegionalNetwork()" style="background-color: #22c55e; color: #fff; margin-top:5px;">فحص وتحديد الشريحة الأنسب لمنطقتي ⚡</button>
+            </div>
+        </div>
+
+        <!-- 6. نظام التحكم عن بعد (Boni Remote) -->
         <div id="remoteSupport" class="card">
             <h2>بوابة الدعم والتحكم عن بُعد (خاص بـ بني سنتر)</h2>
             <p>اختر وضع الاستخدام (للعملاء أو للمهندس المدير):</p>
             
-            <div style="display: flex; gap: 10px; margin-bottom: 1.5rem;">
+            <div style="display: flex; gap: 10px; margin-bottom: 1.2rem;">
                 <button class="tab-btn active" id="clientModeBtn" onclick="setRemoteMode('client')">وضع العميل (مشاركة الشاشة)</button>
                 <button class="tab-btn" id="adminModeBtn" onclick="setRemoteMode('admin')">وضع المهندس (معاينة وعرض)</button>
             </div>
@@ -368,9 +702,9 @@
             <!-- واجهة العميل -->
             <div id="clientRemoteBox">
                 <p>إذا طلب منك المهندس مشاركة شاشتك، اضغط الزر أدناه وأعطه رقم الجلسة الذي سيظهر لك:</p>
-                <button class="btn" style="background-color: #8b5cf6;" onclick="startClientSharing()">بدء مشاركة الشاشة 📺</button>
-                <div id="clientSessionDisplay" style="margin-top: 15px; font-weight: bold; color: #0284c7; font-size: 1.1rem;"></div>
-                <video id="localVideoPreview" autoplay playsinline style="width: 100%; max-height: 250px; margin-top: 10px; background: #000; display: none; border-radius: 8px;"></video>
+                <button class="btn" style="background-color: #8b5cf6; color: #fff;" onclick="startClientSharing()">بدء مشاركة الشاشة 📺</button>
+                <div id="clientSessionDisplay" style="margin-top: 12px; font-weight: bold; color: var(--accent-glow); font-size: 1rem;"></div>
+                <video id="localVideoPreview" autoplay playsinline style="width: 100%; max-height: 220px; margin-top: 10px; background: #000; display: none; border-radius: 8px;"></video>
             </div>
 
             <!-- واجهة المدير / المهندس -->
@@ -379,18 +713,18 @@
                     <label>أدخل رمز جلسة العميل:</label>
                     <input type="text" id="targetSessionInput" placeholder="مثال: boni-4821">
                 </div>
-                <button class="btn" style="background-color: #ef4444;" onclick="connectToRemoteClient()">اتصال بعرض شاشة العميل 👁️‍🗨️</button>
-                <video id="remoteVideoViewer" autoplay playsinline style="width: 100%; max-height: 400px; margin-top: 15px; background: #000; border-radius: 8px;"></video>
+                <button class="btn" style="background-color: #ef4444; color: #fff;" onclick="connectToRemoteClient()">اتصال بعرض شاشة العميل 👁️‍🗨️</button>
+                <video id="remoteVideoViewer" autoplay playsinline style="width: 100%; max-height: 350px; margin-top: 12px; background: #000; border-radius: 8px;"></video>
             </div>
         </div>
 
-        <!-- 5. لوحة طلباتي للمستخدم -->
+        <!-- 7. لوحة طلباتي للمستخدم -->
         <div id="myOrders" class="card">
             <h2>قائمة طلباتي المسجلة</h2>
             <div id="userOrdersList">برجاء تسجيل الدخول أولاً لعرض طلباتك.</div>
         </div>
 
-        <!-- 6. لوحة تحكم المدير -->
+        <!-- 8. لوحة تحكم المدير -->
         <div id="admin" class="card">
             <h2>لوحة تحكم المدير</h2>
             <div id="adminOrdersList">جاري جلب الطلبات من قاعدة البيانات...</div>
@@ -398,24 +732,43 @@
 
     </div>
 
-    <!-- نافذة تسجيل الدخول -->
-    <div id="authModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:1000;">
-        <div style="background:white; padding:2rem; border-radius:12px; width:90%; max-width:400px;">
-            <h3>تسجيل الحساب في بني سنتر</h3>
-            <div class="form-group">
-                <label>الاسم الكامل:</label>
-                <input type="text" id="authName" placeholder="أدخل اسمك الكريم">
+    <!-- نافذة تسجيل الدخول/إنشاء الحساب مع الروبوت التفاعلي -->
+    <div id="authModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(5,7,10,0.85); backdrop-filter: blur(8px); justify-content:center; align-items:center; z-index:1000;">
+        <div style="background:linear-gradient(145deg, #111827, #0f172a); border: 1px solid var(--border-color); padding: 1.8rem; border-radius: 16px; width:90%; max-width:380px; box-shadow: 0 15px 35px rgba(0,0,0,0.5);">
+            
+            <div class="robot-container">
+                <div class="robot-bubble" id="robotBubble">Beep boop. Who goes there? 🤖</div>
+                <div class="robot-avatar" id="robotFace">🤖</div>
             </div>
+
+            <div style="display: flex; gap: 8px; margin-bottom: 1rem; justify-content: center;">
+                <button id="authTabLogin" class="tab-btn active" style="flex:1;" onclick="setAuthMode('login')">تسجيل الدخول</button>
+                <button id="authTabRegister" class="tab-btn" style="flex:1;" onclick="setAuthMode('register')">حساب جديد</button>
+            </div>
+
+            <div id="authNameBox" class="form-group" style="display:none;">
+                <label>الاسم الكامل:</label>
+                <input type="text" id="authName" placeholder="أدخل اسمك الكريم"
+                       onfocus="robotSay('أهلاً بك صديقاً جديداً! اكتب اسمك ✨', '👋')"
+                       onblur="robotSay('Beep boop. Who goes there?', '🤖')">
+            </div>
+
             <div class="form-group">
                 <label>رقم الهاتف (الواتساب):</label>
-                <input type="text" id="authPhone" placeholder="0123456789">
+                <input type="text" id="authPhone" placeholder="0123456789"
+                       onfocus="robotSay('سأحفظ رقم هاتفك بدقة للتوثيق! 📱', '👀')"
+                       onblur="robotSay('Beep boop. Who goes there?', '🤖')">
             </div>
+
             <div class="form-group">
                 <label>كلمة المرور:</label>
-                <input type="password" id="authPass" placeholder="••••••••">
+                <input type="password" id="authPass" placeholder="••••••••"
+                       onfocus="robotSay('لا تقلق، لن أنظر إلى كلمة السر! 🙈', '🙈')"
+                       onblur="robotSay('Beep boop. Who goes there?', '🤖')">
             </div>
-            <button class="btn" onclick="processAuth()">حفظ وتأكيد الحساب</button>
-            <button class="btn btn-secondary" style="margin-top:0.5rem;" onclick="closeAuthModal()">إلغاء</button>
+
+            <button class="btn" id="authSubmitBtn" onclick="processAuth()" style="margin-top: 5px;">تسجيل الدخول 🚀</button>
+            <button class="tab-btn btn-secondary" style="width:100%; margin-top:8px; border:none;" onclick="closeAuthModal()">إلغاء</button>
         </div>
     </div>
 
@@ -438,6 +791,7 @@
         const db = firebase.database();
 
         let currentUser = JSON.parse(localStorage.getItem('boni_user')) || null;
+        let currentAuthMode = 'login';
         const ownerPhone = "249113600735";
 
         let totalOrdersCount = localStorage.getItem('boni_total_counter') || 80;
@@ -445,164 +799,75 @@
 
         window.onload = function() {
             updateAuthUI();
+            loadMarketItems();
         };
 
         function switchTab(tabId) {
             document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => {
-                if(!b.id.includes('adminTabBtn')) b.classList.remove('active');
+                if(!b.id.includes('adminTabBtn') && !b.id.includes('authTab')) b.classList.remove('active');
             });
             
             document.getElementById(tabId).classList.add('active');
             event.currentTarget.classList.add('active');
 
+            if(tabId === 'market') loadMarketItems();
             if(tabId === 'myOrders') loadUserOrders();
             if(tabId === 'admin') loadAdminOrders();
         }
 
-        // ==========================================
-        // إعدادات نظام التحكم عن بعد (رابط سيرفر ريندر الخاص بك)
-        // ==========================================
-        const signalingServerUrl = "https://boni-remote-server.onrender.com"; 
-        
-        let socket = null;
-        let activeRoom = "boni-" + Math.floor(Math.random() * 8999 + 1000);
+        function checkRegionalNetwork() {
+            let region = document.getElementById('userRegionSelect').value;
+            let resultBox = document.getElementById('regionResultBox');
+            let bestNet = document.getElementById('bestNetResult');
+            let quality = document.getElementById('netQualityResult');
 
-        function setRemoteMode(mode) {
-            if(mode === 'client') {
-                document.getElementById('clientRemoteBox').style.display = 'block';
-                document.getElementById('adminRemoteBox').style.display = 'none';
-                document.getElementById('clientModeBtn').classList.add('active');
-                document.getElementById('adminModeBtn').classList.remove('active');
+            resultBox.style.display = 'block';
+
+            if (region === 'الابيض' || region === 'الخرطوم' || region === 'عطبرة') {
+                bestNet.innerText = "زين (Zain) أو إم تي إن (MTN)";
+                quality.innerText = "تغطية ممتازة لخدمات الجيل الرابع 4G وسرعة إنترنت مستقرة في هذه المناطق.";
+            } else if (region === 'بورتسودان' || region === 'كوستي') {
+                bestNet.innerText = "زين (Zain) وسوداني (Sudani)";
+                quality.innerText = "أداء قوي جداً في هذه المناطق مع استقرار تام في الإشارة.";
+            } else if (region === 'مصر' || region === 'ليبيا') {
+                bestNet.innerText = "شبكات المحمول المحلية (مثل فودافون/أورنج أو ليبيانا/المدار)";
+                quality.innerText = "يوصى بشدة استخدام شريحة محلية تابعة لدولة الإقامة لضمان سرعة البيانات.";
             } else {
-                document.getElementById('clientRemoteBox').style.display = 'none';
-                document.getElementById('adminRemoteBox').style.display = 'block';
-                document.getElementById('adminModeBtn').classList.add('active');
-                document.getElementById('clientModeBtn').classList.remove('active');
+                bestNet.innerText = "شبكة الاتصالات العامة الأقرب لبرجك";
+                quality.innerText = "تغطية قياسية متوفرة بحسب موقع الاتصال الحالي.";
             }
         }
 
-        async function startClientSharing() {
-            try {
-                const stream = await navigator.mediaDevices.getDisplayMedia({ video: { cursor: "always" }, audio: false });
-                const videoEl = document.getElementById('localVideoPreview');
-                videoEl.style.display = 'block';
-                videoEl.srcObject = stream;
-
-                document.getElementById('clientSessionDisplay').innerHTML = `✅ تم فتح الجلسة بنجاح!<br><b>أعطِ هذا الرمز للمهندس:</b> <span style="color:red; font-size:1.3rem;">${activeRoom}</span>`;
-
-                // الاتصال بسيرفر الوساطة
-                socket = io(signalingServerUrl);
-                socket.emit('join-room', activeRoom);
-
-                const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
-                stream.getTracks().forEach(track => pc.addTrack(track, stream));
-
-                pc.onicecandidate = e => {
-                    if (e.candidate) socket.emit('ice-candidate', { candidate: e.candidate, room: activeRoom });
-                };
-
-                const offer = await pc.createOffer();
-                await pc.setLocalDescription(offer);
-                socket.emit('offer', { offer: offer, room: activeRoom });
-
-                socket.on('answer', async ans => {
-                    await pc.setRemoteDescription(new RTCSessionDescription(ans));
-                });
-
-                socket.on('ice-candidate', async cand => {
-                    await pc.addIceCandidate(new RTCIceCandidate(cand));
-                });
-
-            } catch (err) {
-                alert('عذراً، لم يتم منح إذن مشاركة الشاشة.');
-                console.error(err);
-            }
+        function robotSay(message, emoji) {
+            document.getElementById('robotBubble').innerText = message;
+            document.getElementById('robotFace').innerText = emoji;
         }
 
-        async function connectToRemoteClient() {
-            let targetRoom = document.getElementById('targetSessionInput').value;
-            if(!targetRoom) { alert('الرجاء إدخال رمز جلسة العميل'); return; }
+        function setAuthMode(mode) {
+            currentAuthMode = mode;
+            const nameBox = document.getElementById('authNameBox');
+            const submitBtn = document.getElementById('authSubmitBtn');
+            const tabLogin = document.getElementById('authTabLogin');
+            const tabReg = document.getElementById('authTabRegister');
 
-            socket = io(signalingServerUrl);
-            socket.emit('join-room', targetRoom);
-
-            const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
-
-            pc.ontrack = e => {
-                const remoteVideo = document.getElementById('remoteVideoViewer');
-                remoteVideo.srcObject = e.streams[0];
-            };
-
-            pc.onicecandidate = e => {
-                if (e.candidate) socket.emit('ice-candidate', { candidate: e.candidate, room: targetRoom });
-            };
-
-            socket.on('offer', async offer => {
-                await pc.setRemoteDescription(new RTCSessionDescription(offer));
-                const answer = await pc.createAnswer();
-                await pc.setLocalDescription(answer);
-                socket.emit('answer', { answer: answer, room: targetRoom });
-            });
-
-            socket.on('ice-candidate', async cand => {
-                await pc.addIceCandidate(new RTCIceCandidate(cand));
-            });
-
-            alert('جاري الاتصال بجهاز العميل...');
-        }
-
-        function handleBankDocChange() {
-            let doc = document.getElementById('bankDocType').value;
-            let priceBox = document.getElementById('priceInfoBox');
-            let priceText = document.getElementById('priceText');
-            let natBox = document.getElementById('nationalNumBox');
-
-            natBox.style.display = 'none';
-
-            if(doc === 'جواز سفر' || doc === 'بطاقة قومية') {
-                priceBox.style.display = 'block';
-                priceText.innerHTML = `💰 <b>سعر الخدمة:</b> 20 ألف سوداني`;
-            } else if(doc === 'رقم وطني') {
-                priceBox.style.display = 'none';
-                natBox.style.display = 'block';
+            if(mode === 'register') {
+                nameBox.style.display = 'block';
+                submitBtn.innerText = 'إنشاء حساب جديد ✨';
+                tabReg.classList.add('active');
+                tabLogin.classList.remove('active');
+                robotSay('أهلاً بك! قم بملء الحقول لإنشاء حسابك 🚀', '😃');
             } else {
-                priceBox.style.display = 'none';
+                nameBox.style.display = 'none';
+                submitBtn.innerText = 'تسجيل الدخول 🚀';
+                tabLogin.classList.add('active');
+                tabReg.classList.remove('active');
+                robotSay('Beep boop. Who goes there? 🤖', '🤖');
             }
         }
 
-        function handleNationalStatusChange() {
-            let status = document.getElementById('nationalStatus').value;
-            let priceBox = document.getElementById('priceInfoBox');
-            let priceText = document.getElementById('priceText');
-
-            if(status === 'محدث وجاهز') {
-                priceBox.style.display = 'block';
-                priceText.innerHTML = `💰 <b>سعر الخدمة:</b> 20 ألف سوداني`;
-            } else if(status === 'يحتاج إلى تحديث') {
-                priceBox.style.display = 'block';
-                priceText.innerHTML = `💰 <b>سعر الخدمة (تحديث الرقم الوطني + فتح الحساب):</b> 120 ألف سوداني`;
-            } else {
-                priceBox.style.display = 'none';
-            }
-        }
-
-        function handlePaymentChoice() {
-            let choice = document.getElementById('paymentChoice').value;
-            let receiptBox = document.getElementById('receiptBox');
-            let agentBox = document.getElementById('agentStateBox');
-
-            receiptBox.style.display = 'none';
-            agentBox.style.display = 'none';
-
-            if(choice === 'تحويل مباشر للإدارة') {
-                receiptBox.style.display = 'block';
-            } else if(choice === 'دفع عبر وكيل الولاية') {
-                agentBox.style.display = 'block';
-            }
-        }
-
-        function openAuthModal() {
+        function openAuthModal(mode = 'login') {
+            setAuthMode(mode);
             document.getElementById('authModal').style.display = 'flex';
         }
 
@@ -611,27 +876,64 @@
         }
 
         function processAuth() {
-            let name = document.getElementById('authName').value;
-            let phone = document.getElementById('authPhone').value;
-            let pass = document.getElementById('authPass').value;
+            let phone = document.getElementById('authPhone').value.trim();
+            let pass = document.getElementById('authPass').value.trim();
+            let name = document.getElementById('authName').value.trim();
 
-            if(!name || !phone || !pass) {
-                alert('الرجاء تعبئة كافة الحقول');
+            if(!phone || !pass) {
+                robotSay('عذراً! يرجى إدخال رقم الهاتف وكلمة السر ⚠️', '⚠️');
                 return;
             }
 
-            currentUser = { name: name, phone: phone, isAdmin: (phone === ownerPhone || name.includes('بنيامين')) };
-            localStorage.setItem('boni_user', JSON.stringify(currentUser));
+            if(currentAuthMode === 'register') {
+                if(!name) {
+                    robotSay('يرجى إدخال الاسم الكامل لإنشاء الحساب! ✍️', '🤔');
+                    return;
+                }
 
-            db.ref('users/' + phone).set({
-                name: name,
-                phone: phone,
-                registeredAt: new Date().toLocaleString('ar-EG')
-            });
+                robotSay('جاري إنشاء وتسجيل الحساب في قاعدة البيانات... ⏳', '⚙️');
 
-            updateAuthUI();
-            closeAuthModal();
-            alert('تم تسجيل حسابك بنجاح!');
+                const userData = {
+                    name: name,
+                    phone: phone,
+                    pass: pass,
+                    registeredAt: new Date().toLocaleString('ar-EG')
+                };
+
+                db.ref('users/' + phone).set(userData, (err) => {
+                    if(!err) {
+                        robotSay('تم إنشاء الحساب بنجاح! مرحباً بك 🎉', '✅');
+                        currentUser = { name: name, phone: phone, isAdmin: (phone === ownerPhone || name.includes('بنيامين')) };
+                        localStorage.setItem('boni_user', JSON.stringify(currentUser));
+                        updateAuthUI();
+                        setTimeout(closeAuthModal, 1200);
+                    } else {
+                        robotSay('حدث خطأ أثناء الإنشاء، حاول مجدداً ❌', '❌');
+                    }
+                });
+
+            } else {
+                robotSay('جاري التحقق من بياناتك... 🔍', '🔎');
+
+                db.ref('users/' + phone).once('value', (snapshot) => {
+                    const userVal = snapshot.val();
+                    if(userVal && userVal.pass === pass) {
+                        robotSay('تم التحقق بنجاح! جاري تحويلك... 🎉', '✅');
+                        currentUser = { name: userVal.name, phone: phone, isAdmin: (phone === ownerPhone || userVal.name.includes('بنيامين')) };
+                        localStorage.setItem('boni_user', JSON.stringify(currentUser));
+                        updateAuthUI();
+                        setTimeout(closeAuthModal, 1200);
+                    } else if (!userVal) {
+                        currentUser = { name: "عميل (" + phone + ")", phone: phone, isAdmin: (phone === ownerPhone) };
+                        localStorage.setItem('boni_user', JSON.stringify(currentUser));
+                        updateAuthUI();
+                        robotSay('أهلاً بك! تم دخولك كحساب مسجل 🎉', '✅');
+                        setTimeout(closeAuthModal, 1200);
+                    } else {
+                        robotSay('كلمة المرور غير صحيحة! أعد المحاولة 🔑', '❌');
+                    }
+                });
+            }
         }
 
         function updateAuthUI() {
@@ -645,8 +947,8 @@
                 }
             } else {
                 document.getElementById('userInfo').innerText = 'مرحباً بك في بني سنتر';
-                document.getElementById('authBtn').innerText = 'تسجيل الحساب / دخول';
-                document.getElementById('authBtn').onclick = openAuthModal;
+                document.getElementById('authBtn').innerText = 'تسجيل الدخول / حساب جديد';
+                document.getElementById('authBtn').onclick = () => openAuthModal('login');
                 document.getElementById('adminTabBtn').style.display = 'none';
             }
         }
@@ -655,151 +957,166 @@
             localStorage.removeItem('boni_user');
             currentUser = null;
             updateAuthUI();
-            switchTab('bank');
+            switchTab('servicesHub');
         }
 
-        function saveAndSendOrder(serviceName, detailsText) {
+        function openGameTopup() {
+            const game = prompt("اختر اللعبة المراد شحنها:\n1- فري فاير (Free Fire)\n2- ببجي (PUBG Mobile)\n3- كول أوف ديوتي (Call of Duty)");
+            if (!game) return;
+            const idPlayer = prompt("اكتب الآيدي (ID) الخاص بك داخل اللعبة:");
+            if (!idPlayer) return;
+            const amount = prompt("اكتب عدد الجواهر/الشدات المطلوبة:");
+            if (!amount) return;
+
+            const name = currentUser ? currentUser.name : "مشترك";
+            const msg = `مرحباً بنيامين، أنا المشترك: ${name}\nأريد شحن لعبة: (${game})\nID اللاعب: ${idPlayer}\nالكمية: ${amount}`;
+            window.open(`https://wa.me/${ownerPhone}?text=` + encodeURIComponent(msg), "_blank");
+        }
+
+        function openAccountsMarket() {
+            alert("قسم سوق الحسابات جاهز للتواصل المباشر مع الإدارة.");
+            const name = currentUser ? currentUser.name : "زبون";
+            const msg = `مرحباً بنيامين، أريد الاستفسار أو عرض حساب للبيع في السوق.\nالاسم: ${name}`;
+            window.open(`https://wa.me/${ownerPhone}?text=` + encodeURIComponent(msg), "_blank");
+        }
+
+        function openOnlinePhoneServices() {
+            const service = prompt("اختر خدمة السوفتوير:\n1- فك شفرة شبكة\n2- تجاوز حساب جوجل (FRP)\n3- تعريب وتحديث سوفتوير\n4- إصلاح مشاكل الأجهزة أونلاين");
+            if (!service) return;
+            const model = prompt("اكتب نوع الهاتف وموديله (مثال: Samsung A52):");
+            if (!model) return;
+
+            const name = currentUser ? currentUser.name : "زبون";
+            const msg = `مرحباً بنيامين، أريد خدمة سوفتوير أونلاين:\nالخدمة: ${service}\nموديل الجهاز: ${model}\nالاسم: ${name}`;
+            window.open(`https://wa.me/${ownerPhone}?text=` + encodeURIComponent(msg), "_blank");
+        }
+
+        function openMikrotikServices() {
+            const option = prompt("خدمات ميكروتيك المتاحة:\n1- ضبط سيرفر Hotspot وتحديد السرعات\n2- حل مشاكل الشبكة واليوزر مانجر\n3- ضبط راوتر / ميكروتيك\n4- تصميم صفحة تسجيل دخول شبكة");
+            if (!option) return;
+
+            const name = currentUser ? currentUser.name : "صاحب شبكة";
+            const msg = `مرحباً بنيامين، أريد خدمة برمجة ميكروتيك:\nنوع الطلب: ${option}\nالاسم: ${name}`;
+            window.open(`https://wa.me/${ownerPhone}?text=` + encodeURIComponent(msg), "_blank");
+        }
+
+        function openEnglishLearning() {
+            alert("قسم تعليم اللغة الإنجليزية وكورسات المحادثة.");
+            const name = currentUser ? currentUser.name : "طالب";
+            const msg = `مرحباً بنيامين، أريد الاستفسار عن دروس وحزم تعليم اللغة الإنجليزية.\nالاسم: ${name}`;
+            window.open(`https://wa.me/${ownerPhone}?text=` + encodeURIComponent(msg), "_blank");
+        }
+
+        function requestApkApp() {
+            const appName = prompt("اكتب اسم التطبيق أو اللعبة التي تريد رابط تنزيلها:");
+            if (!appName) return;
+            const name = currentUser ? currentUser.name : "زبون";
+            const msg = `مرحباً بنيامين، أريد رابط تنزيل مباشر لتطبيق: (${appName})`;
+            window.open(`https://wa.me/${ownerPhone}?text=` + encodeURIComponent(msg), "_blank");
+        }
+
+        function openNetworkSettings() {
+            alert("📶 بيانات ضبط الشبكات في السودان:\n• سوداني: internet\n• زين: zain\n• إم تي إن: internet.mtn.sd");
+        }
+
+        function toggleAddServiceForm() {
             if(!currentUser) {
-                alert('عذراً، يجب تسجيل حسابك أولاً لنتمكن من إتمام طلبك وتوثيقه');
-                openAuthModal();
+                alert('الرجاء تسجيل حساب أولاً لتتمكن من عرض خدماتك في السوق.');
+                openAuthModal('register');
+                return;
+            }
+            const box = document.getElementById('addServiceBox');
+            box.style.display = box.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function publishMarketItem() {
+            if(!currentUser) { alert('سجل دخول أولاً'); openAuthModal('login'); return; }
+
+            const state = document.getElementById('marketState').value;
+            const title = document.getElementById('marketTitle').value;
+            const desc = document.getElementById('marketDesc').value;
+            const price = document.getElementById('marketPrice').value;
+            const phone = document.getElementById('marketPhone').value || currentUser.phone;
+            const fileInput = document.getElementById('marketImageFile');
+
+            if(!title || !desc || !price) {
+                alert('الرجاء ملء حقول العنوان، الوصف، والسعر على الأقل');
                 return;
             }
 
-            let currentCount = parseInt(localStorage.getItem('boni_total_counter')) || 80;
-            currentCount++;
-            localStorage.setItem('boni_total_counter', currentCount);
-            document.getElementById('counterDisplay').innerText = currentCount;
+            const proceedPublish = (imgData) => {
+                const itemId = 'MKT-' + Date.now();
+                const itemData = {
+                    id: itemId,
+                    state: state,
+                    title: title,
+                    image: imgData,
+                    desc: desc,
+                    price: price,
+                    sellerName: currentUser.name,
+                    sellerPhone: phone,
+                    createdAt: new Date().toLocaleDateString('ar-EG')
+                };
 
-            let orderId = 'ORD-' + Math.floor(Math.random() * 899999 + 100000);
-            let orderData = {
-                id: orderId,
-                service: serviceName,
-                details: detailsText,
-                userPhone: currentUser.phone,
-                userName: currentUser.name,
-                date: new Date().toLocaleString('ar-EG'),
-                status: 'قيد المعالجة'
+                db.ref('market/' + itemId).set(itemData, (err) => {
+                    if(!err) {
+                        alert('تم نشر خدمتك بنجاح في سوق بني سنتر!');
+                        document.getElementById('marketTitle').value = '';
+                        document.getElementById('marketImageFile').value = '';
+                        document.getElementById('marketDesc').value = '';
+                        document.getElementById('marketPrice').value = '';
+                        document.getElementById('marketPhone').value = '';
+                        toggleAddServiceForm();
+                        loadMarketItems();
+                    } else {
+                        alert('حدث خطأ أثناء النشر، حاول مجدداً: ' + err.message);
+                    }
+                });
             };
 
-            db.ref('orders/' + orderId).set(orderData);
-
-            let orders = JSON.parse(localStorage.getItem('boni_orders')) || [];
-            orders.push(orderData);
-            localStorage.setItem('boni_orders', JSON.stringify(orders));
-
-            let waMsg = `📌 طلب جديد عبر بني سنتر:\n` +
-                        `🔹 رقم الطلب: ${orderId}\n` +
-                        `👤 العميل: ${currentUser.name}\n` +
-                        `📱 الهاتف: ${currentUser.phone}\n` +
-                        `⚙️ الخدمة: ${serviceName}\n` +
-                        `📝 التفاصيل: ${detailsText}`;
-
-            let waUrl = `https://wa.me/${ownerPhone}?text=` + encodeURIComponent(waMsg);
-            window.open(waUrl, '_blank');
-            switchTab('myOrders');
-        }
-
-        function submitBankOrder() {
-            let doc = document.getElementById('bankDocType').value;
-            if(!doc) { alert('اختر نوع المستند أولاً'); return; }
-
-            let details = `المستند: ${doc}`;
-            let priceVal = "20 ألف سوداني";
-
-            if(doc === 'رقم وطني') {
-                let status = document.getElementById('nationalStatus').value;
-                if(!status) { alert('اختر حالة الرقم الوطني أولاً'); return; }
-                details += ` | الحالة: ${status}`;
-                if(status === 'يحتاج إلى تحديث') {
-                    priceVal = "120 ألف سوداني";
-                }
-            }
-
-            let payChoice = document.getElementById('paymentChoice').value;
-            if(payChoice === 'مناقشة أولاً') {
-                details += ` | حالة الدفع: أريد المناقشة أولاً (بدون دفع مسبق)`;
-            } else if(payChoice === 'دفع عبر وكيل الولاية') {
-                let agentLoc = document.getElementById('agentLocation').value;
-                if(!agentLoc) { alert('الرجاء اختيار الولاية أو المنطقة للوكيل'); return; }
-                details += ` | السعر: ${priceVal} | طريقة الدفع: عبر وكيل الولاية (${agentLoc}) الحساب: 3624451 بنيامين محمد سعيد`;
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    proceedPublish(e.target.result);
+                };
+                reader.readAsDataURL(fileInput.files[0]);
             } else {
-                let receipt = document.getElementById('receiptDetails').value;
-                if(!receipt) { alert('الرجاء إدخال تفاصيل أو رقم إشعار التحويل المباشر'); return; }
-                details += ` | السعر: ${priceVal} | حالة الدفع: تم الدفع المباشر | رقم الإشعار: ${receipt} | الحساب المحول إليه: 3624451 (بنيامين محمد سعيد إبراهيم)`;
+                proceedPublish('https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=300');
             }
-
-            saveAndSendOrder('فتح حساب بنكك', details);
         }
 
-        function submitStarlinkOrder() {
-            let email = document.getElementById('starEmail').value;
-            let pass = document.getElementById('starPass').value;
-            let plan = document.getElementById('starPlan').value;
+        function loadMarketItems() {
+            const grid = document.getElementById('marketGrid');
+            const selectedState = document.getElementById('filterState').value;
 
-            if(!email || !pass) { alert('يرجى كتابة البريد وكلمة المرور'); return; }
-            saveAndSendOrder('سداد فاتورة Starlink', `الحساب: ${email} | المرور: ${pass} | الباقة: ${plan}`);
-        }
-
-        function submitMikrotikOrder() {
-            let type = document.getElementById('mikroType').value;
-            let link = document.getElementById('mikroLink').value;
-            saveAndSendOrder('إدارة الميكروتك', `الخدمة: ${type} | الرابط: ${link || 'غير مدخل'}`);
-        }
-
-        function loadUserOrders() {
-            if(!currentUser) {
-                document.getElementById('userOrdersList').innerHTML = 'برجاء تسجيل الدخول أولاً لعرض طلباتك.';
-                return;
-            }
-
-            let orders = JSON.parse(localStorage.getItem('boni_orders')) || [];
-            let myOrders = orders.filter(o => o.userPhone === currentUser.phone);
-
-            if(myOrders.length === 0) {
-                document.getElementById('userOrdersList').innerHTML = '<p>لا توجد طلبات مسجلة باسمك حتى الآن.</p>';
-                return;
-            }
-
-            let html = '<table><thead><tr><th>رقم الطلب</th><th>الخدمة</th><th>التفاصيل</th><th>التاريخ</th><th>إرسال للواتساب</th></tr></thead><tbody>';
-            myOrders.forEach(o => {
-                let waMsg = `مرحباً، أود متابعة طلبي:\nرقم الطلب: ${o.id}\nالخدمة: ${o.service}\nالتفاصيل: ${o.details}`;
-                let waLink = `https://wa.me/${ownerPhone}?text=` + encodeURIComponent(waMsg);
-
-                html += `<tr>
-                    <td><b>${o.id}</b></td>
-                    <td>${o.service}</td>
-                    <td>${o.details}</td>
-                    <td>${o.date}</td>
-                    <td><a href="${waLink}" target="_blank" class="btn-whatsapp">إرسال للواتساب 💬</a></td>
-                </tr>`;
-            });
-            html += '</tbody></table>';
-            document.getElementById('userOrdersList').innerHTML = html;
-        }
-
-        function loadAdminOrders() {
-            db.ref('orders').once('value', (snapshot) => {
-                let data = snapshot.val();
+            db.ref('market').once('value', (snapshot) => {
+                const data = snapshot.val();
                 if(!data) {
-                    document.getElementById('adminOrdersList').innerHTML = '<p>لا توجد طلبات في قاعدة البيانات السحابية حتى الآن.</p>';
+                    grid.innerHTML = '<p>لا توجد خدمات معروضة في السوق حالياً. كن أول من يضيف خدمة!</p>';
                     return;
                 }
 
-                let html = '<table><thead><tr><th>رقم الطلب</th><th>العميل</th><th>الهاتف</th><th>الخدمة</th><th>التفاصيل</th><th>التاريخ</th></tr></thead><tbody>';
-                Object.values(data).forEach(o => {
-                    html += `<tr>
-                        <td><b>${o.id}</b></td>
-                        <td>${o.userName}</td>
-                        <td>${o.userPhone}</td>
-                        <td>${o.service}</td>
-                        <td>${o.details}</td>
-                        <td>${o.date}</td>
-                    </tr>`;
-                });
-                html += '</tbody></table>';
-                document.getElementById('adminOrdersList').innerHTML = html;
-            });
-        }
-    </script>
-</body>
-</html>
+                let items = Object.values(data).reverse();
+                if(selectedState !== 'الكل') {
+                    items = items.filter(i => i.state === selectedState || i.state === 'عامة');
+                }
+
+                if(items.length === 0) {
+                    grid.innerHTML = `<p>لا توجد خدمات معروضة حالياً في منطقة (<b>${selectedState}</b>).</p>`;
+                    return;
+                }
+
+                let html = '';
+                items.forEach(item => {
+                    const waMsg = `مرحباً، أود طلب الخدمة المعروضة في سوق بني سنتر (${item.state || 'عامة'}):\n📌 الخدمة: ${item.title}\n💰 السعر: ${item.price}\n👤 البائع: ${item.sellerName}`;
+                    const waUrl = `https://wa.me/${item.sellerPhone}?text=` + encodeURIComponent(waMsg);
+                    const imgSrc = item.image || 'https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=300';
+
+                    html += `
+                    <div class="market-card">
+                        <span class="state-badge">📍 ${item.state || 'عامة'}</span>
+                        <div>
+                            <img src="${imgSrc}" alt="صورة المنتج" onerror="this.src='https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=300'">
+                            <h3 style="margin:5px 0; font-size:15px;">${item.title}</h3>
+                            <div style="font-size:11px; color:var(--text-muted); margin-bottom:5px;">👤 المزود: ${item.sellerName}</div>
+                            <p style="font-size:12px; color:var(--text-muted);">${item.des
