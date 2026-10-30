@@ -31,6 +31,7 @@
             min-height: 100vh;
         }
 
+        /* خلفية إضاءة محيطية عصرية */
         .ambient-glow {
             position: fixed;
             top: -100px;
@@ -138,6 +139,7 @@
             display: block;
         }
 
+        /* تنسيق شبكة الأيقونات والخدمات بشكل أنيق ومضغوط غير ضخم */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -285,6 +287,11 @@
             margin-top: 5px;
         }
 
+        .btn-secondary {
+            background-color: #475569;
+            color: white;
+        }
+
         .market-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -339,6 +346,7 @@
             display: block;
         }
 
+        /* تنسيق الروبوت التفاعلي */
         .robot-container {
             text-align: center;
             margin-bottom: 12px;
@@ -419,6 +427,7 @@
             </div>
         </div>
 
+        <!-- التبويبات الرئيسية -->
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('servicesHub')">🚀 الخدمات والأيقونات</button>
             <button class="tab-btn" onclick="switchTab('downloadApp')">📲 تطبيق APK والشرح</button>
@@ -432,7 +441,7 @@
             <button class="tab-btn" id="adminTabBtn" style="display:none; background-color:#ef4444; color:white;" onclick="switchTab('admin')">👑 الإدارة</button>
         </div>
 
-        <!-- 0. الخدمات والأيقونات -->
+        <!-- 0. مركز الخدمات والأيقونات المرتبة بعناية -->
         <div id="servicesHub" class="card active">
             <h2>قسم الخدمات السريعة والأيقونات المتاحة</h2>
             <p>اختر الخدمة المطلوبة ليتم تحويلك وإرسال طلبك مباشرة عبر الواتساب:</p>
@@ -455,7 +464,7 @@
             </div>
         </div>
 
-        <!-- التطبيق والشرح -->
+        <!-- قسم تحميل التطبيق APK وفيديو الشرح -->
         <div id="downloadApp" class="card">
             <h2>📲 تحميل تطبيق "بني سنتر" الرسمي (APK)</h2>
             <p>استمتع بتجربة أسرع عبر تثبيت التطبيق مباشرة على هاتفك الأندرويد:</p>
@@ -469,17 +478,17 @@
             <hr style="border-color: var(--border-color); margin: 1.5rem 0;">
 
             <h3>📹 فيديو الشرح التوضيحي (خطوات التثبيت):</h3>
-            <p>شاهد الفيديو التالي لمعرفة طريقة تثبيت التطبيق:</p>
+            <p>شاهد الفيديو التالي لمعرفة طريقة تثبيت التطبيق وتجاوز قيود المصادر المجهولة:</p>
 
             <div class="video-box">
-                <video controls>
+                <video controls poster="https://images.unsplash.com/photo-1616469829941-c7200edec809?w=800">
                     <source src="فيديو_التثبيت_الخاص_بك.mp4" type="video/mp4">
-                    متصفحك لا يدعم تشغيل الفيديو المباشر.
+                    متصفحك لا يدعم تشغيل الفيديو المباشر. يرجى وضع ملف الفيديو بصيغة MP4 في مجلد المشروع.
                 </video>
             </div>
         </div>
 
-        <!-- السوق -->
+        <!-- 1. سوق الخدمات الرقمية بالولايات -->
         <div id="market" class="card">
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 1rem;">
                 <h2>سوق بني سنتر المفتوح حسب الولايات</h2>
@@ -545,9 +554,11 @@
             <div id="marketGrid" class="market-grid"></div>
         </div>
 
-        <!-- بنكك -->
+        <!-- 2. نموذج فتح حساب بنكك -->
         <div id="bank" class="card">
             <h2>خدمة فتح وتفعيل حساب "بنكك" عن بُعد</h2>
+            <p>اختر المستند الثبوتي المتوفر لديك لإتمام العملية من هاتفك بكل أمان:</p>
+
             <div class="form-group">
                 <label>اختر المستند الثبوتي:</label>
                 <select id="bankDocType" onchange="handleBankDocChange()">
@@ -589,7 +600,7 @@
                     <select id="agentLocation">
                         <option value="">-- اختر الولاية / المدينة --</option>
                         <option value="الأبيض">الأبيض (شمال كردفان)</option>
-                        <option value="بورتسودان">بورتسودان (البحر الأحمر)</option>
+                        <option value="بورتسودان">بورتسودان (ولاية البحر الأحمر)</option>
                         <option value="عطبرة">عطبرة (نهر النيل)</option>
                         <option value="كوستي">كوستي (النيل الأبيض)</option>
                         <option value="الجزيرة">الجزيرة</option>
@@ -609,9 +620,9 @@
             <button class="btn" onclick="submitBankOrder()" style="margin-top: 1rem;">تأكيد وإرسال طلب فتح الحساب للواتساب</button>
         </div>
 
-        <!-- Starlink -->
+        <!-- 3. خدمة سداد Starlink -->
         <div id="starlink" class="card">
-            <h2>سداد فاتورة وااشتراك Starlink</h2>
+            <h2>سداد فاتورة واشتراك Starlink</h2>
             <div class="form-group">
                 <label>البريد الإلكتروني لحساب Starlink:</label>
                 <input type="email" id="starEmail" placeholder="example@gmail.com">
@@ -631,7 +642,7 @@
             <button class="btn" onclick="submitStarlinkOrder()">تأكيد وإرسال طلب السداد للواتساب</button>
         </div>
 
-        <!-- الميكروتك -->
+        <!-- 4. إدارة راوتر الميكروتك -->
         <div id="mikrotik" class="card">
             <h2>إدارة وتهيئة راوتر MikroTik عن بُعد</h2>
             <div class="form-group">
@@ -649,11 +660,11 @@
             <button class="btn" onclick="submitMikrotikOrder()">إرسال طلب الميكروتك للواتساب</button>
         </div>
 
-        <!-- محدد الشبكة -->
+        <!-- 5. محدد الشبكة والمنطقة الذكي -->
         <div id="networkTool" class="card">
             <div style="background:rgba(15, 23, 42, 0.7); border:1px solid var(--border-color); border-radius:14px; padding:1.5rem; text-align:right;">
                 <h2 style="color:var(--accent-glow); text-align:center; margin-top:0;">محدد الشبكة والشريحة الأنسب حسب منطقتك</h2>
-                <p style="text-align:center; color:var(--text-muted); font-size:12px; margin-bottom:1.2rem;">حدد ولايتك الحالية لمعرفة الشبكة الأقوى وأفضل تغطية إنترنت متاحة:</p>
+                <p style="text-align:center; color:var(--text-muted); font-size:12px; margin-bottom:1.2rem;">حدد ولايتك الحالية أو دولتك لمعرفة الشبكة الأقوى وأفضل تغطية إنترنت متاحة:</p>
 
                 <div class="form-group">
                     <label style="color:var(--accent-glow);">اختر منطقتك أو ولايتك الحالية:</label>
@@ -678,23 +689,25 @@
             </div>
         </div>
 
-        <!-- التحكم عن بعد -->
+        <!-- 6. نظام التحكم عن بعد (Boni Remote) -->
         <div id="remoteSupport" class="card">
             <h2>بوابة الدعم والتحكم عن بُعد (خاص بـ بني سنتر)</h2>
-            <p>اختر وضع الاستخدام:</p>
+            <p>اختر وضع الاستخدام (للعملاء أو للمهندس المدير):</p>
             
             <div style="display: flex; gap: 10px; margin-bottom: 1.2rem;">
                 <button class="tab-btn active" id="clientModeBtn" onclick="setRemoteMode('client')">وضع العميل (مشاركة الشاشة)</button>
                 <button class="tab-btn" id="adminModeBtn" onclick="setRemoteMode('admin')">وضع المهندس (معاينة وعرض)</button>
             </div>
 
+            <!-- واجهة العميل -->
             <div id="clientRemoteBox">
-                <p>إذا طلب منك المهندس مشاركة شاشتك، اضغط الزر أدناه:</p>
+                <p>إذا طلب منك المهندس مشاركة شاشتك، اضغط الزر أدناه وأعطه رقم الجلسة الذي سيظهر لك:</p>
                 <button class="btn" style="background-color: #8b5cf6; color: #fff;" onclick="startClientSharing()">بدء مشاركة الشاشة 📺</button>
                 <div id="clientSessionDisplay" style="margin-top: 12px; font-weight: bold; color: var(--accent-glow); font-size: 1rem;"></div>
                 <video id="localVideoPreview" autoplay playsinline style="width: 100%; max-height: 220px; margin-top: 10px; background: #000; display: none; border-radius: 8px;"></video>
             </div>
 
+            <!-- واجهة المدير / المهندس -->
             <div id="adminRemoteBox" style="display: none;">
                 <div class="form-group">
                     <label>أدخل رمز جلسة العميل:</label>
@@ -705,13 +718,13 @@
             </div>
         </div>
 
-        <!-- طلباتي -->
+        <!-- 7. لوحة طلباتي للمستخدم -->
         <div id="myOrders" class="card">
             <h2>قائمة طلباتي المسجلة</h2>
             <div id="userOrdersList">برجاء تسجيل الدخول أولاً لعرض طلباتك.</div>
         </div>
 
-        <!-- الإدارة -->
+        <!-- 8. لوحة تحكم المدير -->
         <div id="admin" class="card">
             <h2>لوحة تحكم المدير</h2>
             <div id="adminOrdersList">جاري جلب الطلبات من قاعدة البيانات...</div>
@@ -719,7 +732,7 @@
 
     </div>
 
-    <!-- نافذة تسجيل الدخول -->
+    <!-- نافذة تسجيل الدخول/إنشاء الحساب مع الروبوت التفاعلي -->
     <div id="authModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(5,7,10,0.85); backdrop-filter: blur(8px); justify-content:center; align-items:center; z-index:1000;">
         <div style="background:linear-gradient(145deg, #111827, #0f172a); border: 1px solid var(--border-color); padding: 1.8rem; border-radius: 16px; width:90%; max-width:380px; box-shadow: 0 15px 35px rgba(0,0,0,0.5);">
             
@@ -755,7 +768,7 @@
             </div>
 
             <button class="btn" id="authSubmitBtn" onclick="processAuth()" style="margin-top: 5px;">تسجيل الدخول 🚀</button>
-            <button class="tab-btn btn-secondary" style="width:100%; margin-top:8px; border:none; background:#475569; color:#fff;" onclick="closeAuthModal()">إلغاء</button>
+            <button class="tab-btn btn-secondary" style="width:100%; margin-top:8px; border:none;" onclick="closeAuthModal()">إلغاء</button>
         </div>
     </div>
 
@@ -779,17 +792,7 @@
 
         let currentUser = JSON.parse(localStorage.getItem('boni_user')) || null;
         let currentAuthMode = 'login';
-
-        // ==================== أرقام الواتساب المخصصة للخدمات ====================
-        const ownerPhone = "249113600735";         // الرقم العام للإدارة
-        const gamesPhone = "249114744817";         // رقم شحن ألعاب الحرب
-        const marketPhoneNum = "249113600735";     // رقم سوق الحسابات
-        const phonesServicePhone = "249113600735"; // رقم خدمات الهواتف والسوفتوير
-        const mikrotikPhone = "249113600735";      // رقم برمجة الميكروتيك
-        const englishPhone = "249113600735";       // رقم تعلم الإنجليزية
-        const apkPhone = "249113600735";           // رقم طلبات التطبيقات APK
-        const bankPhone = "249113600735";          // رقم فتح حساب بنكك
-        const starlinkPhone = "249113600735";      // رقم سداد ستارلينك
+        const ownerPhone = "249113600735";
 
         let totalOrdersCount = localStorage.getItem('boni_total_counter') || 80;
         document.getElementById('counterDisplay').innerText = totalOrdersCount;
@@ -828,7 +831,7 @@
                 bestNet.innerText = "زين (Zain) وسوداني (Sudani)";
                 quality.innerText = "أداء قوي جداً في هذه المناطق مع استقرار تام في الإشارة.";
             } else if (region === 'مصر' || region === 'ليبيا') {
-                bestNet.innerText = "شبكات المحمول المحلية (فودافون/أورنج أو ليبيانا/المدار)";
+                bestNet.innerText = "شبكات المحمول المحلية (مثل فودافون/أورنج أو ليبيانا/المدار)";
                 quality.innerText = "يوصى بشدة استخدام شريحة محلية تابعة لدولة الإقامة لضمان سرعة البيانات.";
             } else {
                 bestNet.innerText = "شبكة الاتصالات العامة الأقرب لبرجك";
@@ -957,12 +960,6 @@
             switchTab('servicesHub');
         }
 
-        function processService(serviceName) {
-            const name = currentUser ? currentUser.name : "مشترك";
-            const msg = `مرحباً بنيامين، أريد طلب خدمة: (${serviceName})\nالاسم: ${name}`;
-            window.open(`https://wa.me/${ownerPhone}?text=` + encodeURIComponent(msg), "_blank");
-        }
-
         function openGameTopup() {
             const game = prompt("اختر اللعبة المراد شحنها:\n1- فري فاير (Free Fire)\n2- ببجي (PUBG Mobile)\n3- كول أوف ديوتي (Call of Duty)");
             if (!game) return;
@@ -973,13 +970,14 @@
 
             const name = currentUser ? currentUser.name : "مشترك";
             const msg = `مرحباً بنيامين، أنا المشترك: ${name}\nأريد شحن لعبة: (${game})\nID اللاعب: ${idPlayer}\nالكمية: ${amount}`;
-            window.open(`https://wa.me/${gamesPhone}?text=` + encodeURIComponent(msg), "_blank");
+            window.open(`https://wa.me/${ownerPhone}?text=` + encodeURIComponent(msg), "_blank");
         }
 
         function openAccountsMarket() {
+            alert("قسم سوق الحسابات جاهز للتواصل المباشر مع الإدارة.");
             const name = currentUser ? currentUser.name : "زبون";
             const msg = `مرحباً بنيامين، أريد الاستفسار أو عرض حساب للبيع في السوق.\nالاسم: ${name}`;
-            window.open(`https://wa.me/${marketPhoneNum}?text=` + encodeURIComponent(msg), "_blank");
+            window.open(`https://wa.me/${ownerPhone}?text=` + encodeURIComponent(msg), "_blank");
         }
 
         function openOnlinePhoneServices() {
@@ -990,7 +988,7 @@
 
             const name = currentUser ? currentUser.name : "زبون";
             const msg = `مرحباً بنيامين، أريد خدمة سوفتوير أونلاين:\nالخدمة: ${service}\nموديل الجهاز: ${model}\nالاسم: ${name}`;
-            window.open(`https://wa.me/${phonesServicePhone}?text=` + encodeURIComponent(msg), "_blank");
+            window.open(`https://wa.me/${ownerPhone}?text=` + encodeURIComponent(msg), "_blank");
         }
 
         function openMikrotikServices() {
@@ -999,13 +997,14 @@
 
             const name = currentUser ? currentUser.name : "صاحب شبكة";
             const msg = `مرحباً بنيامين، أريد خدمة برمجة ميكروتيك:\nنوع الطلب: ${option}\nالاسم: ${name}`;
-            window.open(`https://wa.me/${mikrotikPhone}?text=` + encodeURIComponent(msg), "_blank");
+            window.open(`https://wa.me/${ownerPhone}?text=` + encodeURIComponent(msg), "_blank");
         }
 
         function openEnglishLearning() {
+            alert("قسم تعليم اللغة الإنجليزية وكورسات المحادثة.");
             const name = currentUser ? currentUser.name : "طالب";
             const msg = `مرحباً بنيامين، أريد الاستفسار عن دروس وحزم تعليم اللغة الإنجليزية.\nالاسم: ${name}`;
-            window.open(`https://wa.me/${englishPhone}?text=` + encodeURIComponent(msg), "_blank");
+            window.open(`https://wa.me/${ownerPhone}?text=` + encodeURIComponent(msg), "_blank");
         }
 
         function requestApkApp() {
@@ -1013,7 +1012,7 @@
             if (!appName) return;
             const name = currentUser ? currentUser.name : "زبون";
             const msg = `مرحباً بنيامين، أريد رابط تنزيل مباشر لتطبيق: (${appName})`;
-            window.open(`https://wa.me/${apkPhone}?text=` + encodeURIComponent(msg), "_blank");
+            window.open(`https://wa.me/${ownerPhone}?text=` + encodeURIComponent(msg), "_blank");
         }
 
         function openNetworkSettings() {
@@ -1120,4 +1119,4 @@
                             <img src="${imgSrc}" alt="صورة المنتج" onerror="this.src='https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=300'">
                             <h3 style="margin:5px 0; font-size:15px;">${item.title}</h3>
                             <div style="font-size:11px; color:var(--text-muted); margin-bottom:5px;">👤 المزود: ${item.sellerName}</div>
-                        
+                            <p style="font-size:12px; color:var(--te
