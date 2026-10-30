@@ -272,19 +272,6 @@
             text-align: center;
         }
 
-        .btn-whatsapp {
-            background-color: #25d366;
-            color: white;
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 5px;
-        }
-
         .market-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -432,7 +419,7 @@
             <button class="tab-btn" id="adminTabBtn" style="display:none; background-color:#ef4444; color:white;" onclick="switchTab('admin')">👑 الإدارة</button>
         </div>
 
-        <!-- 0. الخدمات والأيقونات -->
+        <!-- 1. الخدمات والأيقونات -->
         <div id="servicesHub" class="card active">
             <h2>قسم الخدمات السريعة والأيقونات المتاحة</h2>
             <p>اختر الخدمة المطلوبة ليتم تحويلك وإرسال طلبك مباشرة عبر الواتساب:</p>
@@ -455,21 +442,24 @@
             </div>
         </div>
 
-        <!-- التطبيق والشرح -->
+        <!-- 2. التطبيق والشرح -->
         <div id="downloadApp" class="card">
-            <h2>📲 تحميل تطبيق "بني سنتر" الرسمي (APK)</h2>
-            <p>استمتع بتجربة أسرع عبر تثبيت التطبيق مباشرة على هاتفك الأندرويد:</p>
+            <h2>📲 تحميل حزمة وتطبيق "بني سنتر" (ZIP / APK)</h2>
+            <p>استمتع بتجربة أسرع عبر تثبيت التطبيق أو تحميل الحزمة البرمجية الرسمية:</p>
 
-            <div style="text-align: center; margin: 1.2rem 0;">
-                <a href="BoniCenter.apk" class="btn btn-apk" style="padding: 0.8rem 2rem; width: auto; font-size: 1rem;" download>
-                    ⬇️ تحميل تطبيق بني سنتر APK المباشر
+            <div style="text-align: center; margin: 1.2rem 0; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                <a href="https://github.com/mohtarmohammed141-maker/abu-mlak-/raw/refs/heads/main/Beni%20Center%201.0.zip" class="btn btn-apk" style="padding: 0.8rem 1.5rem; width: auto; font-size: 0.95rem;" download>
+                    📦 تحميل حزمة المشروع (ZIP)
+                </a>
+                <a href="BoniCenter.apk" class="btn btn-apk" style="padding: 0.8rem 1.5rem; width: auto; font-size: 0.95rem;" download>
+                    ⬇️ تحميل تطبيق الأندرويد APK
                 </a>
             </div>
 
             <hr style="border-color: var(--border-color); margin: 1.5rem 0;">
 
-            <h3>📹 فيديو الشرح التوضيحي (خطوات التثبيت):</h3>
-            <p>شاهد الفيديو التالي لمعرفة طريقة تثبيت التطبيق:</p>
+            <h3>📹 فيديو الشرح التوضيحي (خطوات التثبيت والتشغيل):</h3>
+            <p>شاهد الفيديو التالي لمعرفة طريقة التثبيت والاستخدام الكامل:</p>
 
             <div class="video-box">
                 <video controls>
@@ -479,7 +469,7 @@
             </div>
         </div>
 
-        <!-- السوق -->
+        <!-- 3. السوق -->
         <div id="market" class="card">
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 1rem;">
                 <h2>سوق بني سنتر المفتوح حسب الولايات</h2>
@@ -545,7 +535,7 @@
             <div id="marketGrid" class="market-grid"></div>
         </div>
 
-        <!-- بنكك -->
+        <!-- 4. بنكك -->
         <div id="bank" class="card">
             <h2>خدمة فتح وتفعيل حساب "بنكك" عن بُعد</h2>
             <div class="form-group">
@@ -609,7 +599,7 @@
             <button class="btn" onclick="submitBankOrder()" style="margin-top: 1rem;">تأكيد وإرسال طلب فتح الحساب للواتساب</button>
         </div>
 
-        <!-- Starlink -->
+        <!-- 5. Starlink -->
         <div id="starlink" class="card">
             <h2>سداد فاتورة وااشتراك Starlink</h2>
             <div class="form-group">
@@ -631,7 +621,7 @@
             <button class="btn" onclick="submitStarlinkOrder()">تأكيد وإرسال طلب السداد للواتساب</button>
         </div>
 
-        <!-- الميكروتك -->
+        <!-- 6. الميكروتك -->
         <div id="mikrotik" class="card">
             <h2>إدارة وتهيئة راوتر MikroTik عن بُعد</h2>
             <div class="form-group">
@@ -649,7 +639,7 @@
             <button class="btn" onclick="submitMikrotikOrder()">إرسال طلب الميكروتك للواتساب</button>
         </div>
 
-        <!-- محدد الشبكة -->
+        <!-- 7. محدد الشبكة -->
         <div id="networkTool" class="card">
             <div style="background:rgba(15, 23, 42, 0.7); border:1px solid var(--border-color); border-radius:14px; padding:1.5rem; text-align:right;">
                 <h2 style="color:var(--accent-glow); text-align:center; margin-top:0;">محدد الشبكة والشريحة الأنسب حسب منطقتك</h2>
@@ -678,7 +668,7 @@
             </div>
         </div>
 
-        <!-- التحكم عن بعد -->
+        <!-- 8. التحكم عن بعد -->
         <div id="remoteSupport" class="card">
             <h2>بوابة الدعم والتحكم عن بُعد (خاص بـ بني سنتر)</h2>
             <p>اختر وضع الاستخدام:</p>
@@ -705,13 +695,13 @@
             </div>
         </div>
 
-        <!-- طلباتي -->
+        <!-- 9. طلباتي -->
         <div id="myOrders" class="card">
             <h2>قائمة طلباتي المسجلة</h2>
             <div id="userOrdersList">برجاء تسجيل الدخول أولاً لعرض طلباتك.</div>
         </div>
 
-        <!-- الإدارة -->
+        <!-- 10. الإدارة -->
         <div id="admin" class="card">
             <h2>لوحة تحكم المدير</h2>
             <div id="adminOrdersList">جاري جلب الطلبات من قاعدة البيانات...</div>
@@ -780,16 +770,16 @@
         let currentUser = JSON.parse(localStorage.getItem('boni_user')) || null;
         let currentAuthMode = 'login';
 
-        // ==================== أرقام الواتساب المخصصة للخدمات ====================
-        const ownerPhone = "249113600735";         // الرقم العام للإدارة
-        const gamesPhone = "249114744817";         // رقم شحن ألعاب الحرب
-        const marketPhoneNum = "249113600735";     // رقم سوق الحسابات
-        const phonesServicePhone = "249113600735"; // رقم خدمات الهواتف والسوفتوير
-        const mikrotikPhone = "249113600735";      // رقم برمجة الميكروتيك
-        const englishPhone = "249113600735";       // رقم تعلم الإنجليزية
-        const apkPhone = "249113600735";           // رقم طلبات التطبيقات APK
-        const bankPhone = "249113600735";          // رقم فتح حساب بنكك
-        const starlinkPhone = "249113600735";      // رقم سداد ستارلينك
+        // أرقام الواتساب المخصصة للخدمات
+        const ownerPhone = "249113600735";
+        const gamesPhone = "249114744817";
+        const marketPhoneNum = "249113600735";
+        const phonesServicePhone = "249113600735";
+        const mikrotikPhone = "249113600735";
+        const englishPhone = "249113600735";
+        const apkPhone = "249113600735";
+        const bankPhone = "249113600735";
+        const starlinkPhone = "249113600735";
 
         let totalOrdersCount = localStorage.getItem('boni_total_counter') || 80;
         document.getElementById('counterDisplay').innerText = totalOrdersCount;
@@ -1122,120 +1112,6 @@
                             <div style="font-size:11px; color:var(--text-muted); margin-bottom:5px;">👤 المزود: ${item.sellerName}</div>
                             <p style="font-size:12px; color:var(--text-muted);">${item.desc}</p>
                         </div>
-                        <div style="margin-top: 10px;">
-                            <div style="color:var(--accent-green); font-weight:bold; font-size:13px; margin-bottom:8px;">💰 ${item.price}</div>
-                            <a href="${waUrl}" target="_blank" class="btn btn-whatsapp" style="width:100%; text-align:center; padding: 0.5rem; font-size: 12px;">طلب عبر الواتساب 💬</a>
-                        </div>
-                    </div>`;
-                });
-                grid.innerHTML = html;
-            });
-        }
-
-        function handleBankDocChange() {
-            let doc = document.getElementById('bankDocType').value;
-            let priceBox = document.getElementById('priceInfoBox');
-            let priceText = document.getElementById('priceText');
-            let nationalBox = document.getElementById('nationalNumBox');
-
-            nationalBox.style.display = 'none';
-
-            if (doc === 'جواز سفر' || doc === 'بطاقة قومية') {
-                priceBox.style.display = 'block';
-                priceText.innerHTML = `💵 <b>سعر فتح الحساب (${doc}):</b> 20,000 جنيه سوداني`;
-            } else if (doc === 'رقم وطني') {
-                priceBox.style.display = 'none';
-                nationalBox.style.display = 'block';
-            } else {
-                priceBox.style.display = 'none';
-            }
-        }
-
-        function handleNationalStatusChange() {
-            let status = document.getElementById('nationalStatus').value;
-            let priceBox = document.getElementById('priceInfoBox');
-            let priceText = document.getElementById('priceText');
-
-            if (status) {
-                priceBox.style.display = 'block';
-                if (status.includes('محدث')) {
-                    priceText.innerHTML = `💵 <b>السعر:</b> 20,000 جنيه سوداني`;
-                } else {
-                    priceText.innerHTML = `💵 <b>السعر (تحديث + فتح):</b> 120,000 جنيه سوداني`;
-                }
-            } else {
-                priceBox.style.display = 'none';
-            }
-        }
-
-        function handlePaymentChoice() {
-            let choice = document.getElementById('paymentChoice').value;
-            let agentBox = document.getElementById('agentStateBox');
-            let receiptBox = document.getElementById('receiptBox');
-
-            if (choice.includes('وكيل')) {
-                agentBox.style.display = 'block';
-                receiptBox.style.display = 'none';
-            } else if (choice.includes('تحويل')) {
-                agentBox.style.display = 'none';
-                receiptBox.style.display = 'block';
-            } else {
-                agentBox.style.display = 'none';
-                receiptBox.style.display = 'none';
-            }
-        }
-
-        function submitBankOrder() {
-            let doc = document.getElementById('bankDocType').value;
-            if(!doc) { alert('الرجاء اختيار المستند الثبوتي'); return; }
-
-            let name = currentUser ? currentUser.name : prompt("أدخل اسمك الكريم:");
-            if(!name) return;
-
-            let phone = currentUser ? currentUser.phone : prompt("أدخل رقم هاتفك للتواصل:");
-            if(!phone) return;
-
-            let payment = document.getElementById('paymentChoice').value;
-            let details = document.getElementById('receiptDetails').value || "بدون تفاصيل";
-
-            let msg = `💳 طلب فتح حساب بنكك جديد:\n👤 الاسم: ${name}\n📱 الهاتف: ${phone}\n📄 المستند: ${doc}\n💸 طريقة الدفع: ${payment}\n📌 تفاصيل الإشعار: ${details}`;
-            window.open(`https://wa.me/${bankPhone}?text=` + encodeURIComponent(msg), "_blank");
-        }
-
-        function submitStarlinkOrder() {
-            let email = document.getElementById('starEmail').value;
-            let pass = document.getElementById('starPass').value;
-            let plan = document.getElementById('starPlan').value;
-
-            if(!email || !pass) { alert('الرجاء إدخال البريد وكلمة المرور لحساب ستارلينك'); return; }
-
-            let name = currentUser ? currentUser.name : "مشترك";
-            let msg = `🛰️ طلب اشتراك/سداد Starlink:\n👤 الاسم: ${name}\n📧 البريد: ${email}\n🔑 كلمة السر: ${pass}\n📦 الباقة: ${plan}`;
-            window.open(`https://wa.me/${starlinkPhone}?text=` + encodeURIComponent(msg), "_blank");
-        }
-
-        function submitMikrotikOrder() {
-            let type = document.getElementById('mikroType').value;
-            let link = document.getElementById('mikroLink').value || "غير متوفر";
-
-            let name = currentUser ? currentUser.name : "صاحب شبكة";
-            let msg = `⚙️ طلب برمجة ميكروتيك:\n👤 الاسم: ${name}\n📌 الخدمة: ${type}\n🔗 الرابط/AnyDesk: ${link}`;
-            window.open(`https://wa.me/${mikrotikPhone}?text=` + encodeURIComponent(msg), "_blank");
-        }
-
-        function loadUserOrders() {
-            const list = document.getElementById('userOrdersList');
-            if(!currentUser) {
-                list.innerHTML = 'برجاء تسجيل الدخول أولاً لعرض طلباتك.';
-                return;
-            }
-            list.innerHTML = `<p>مرحباً <b>${currentUser.name}</b>، لا توجد طلبات معلقة حالياً في سجلك. جميع طلباتك السابقة تمت معالجتها بنجاح عبر الواتساب!</p>`;
-        }
-
-        function loadAdminOrders() {
-            const list = document.getElementById('adminOrdersList');
-            list.innerHTML = `<p style="color:var(--accent-glow);">أهلاً بك يا مهندس بنيامين. الإدارة تعمل بأعلى كفاءة، وتتم متابعة الطلبات مباشرة عبر الواتساب وقاعدة بيانات Firebase.</p>`;
-        }
-    </script>
-</body>
-</html>
+                        <div style="margin-top:10px;">
+                            <div style="color:var(--accent-green); font-weight:bold; font-size:13px; margin-bottom:8px;">💰 السعر: ${item.price}</div>
+                 
