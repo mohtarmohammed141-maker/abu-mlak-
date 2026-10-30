@@ -438,21 +438,7 @@
             <p>اختر الخدمة المطلوبة ليتم تحويلك وإرسال طلبك مباشرة عبر الواتساب:</p>
             
             <div class="grid">
-                function openGameTopup() {
-    const game = prompt("اختر اللعبة المراد شحنها:\n1- فري فاير (Free Fire)\n2- ببجي (PUBG Mobile)");
-    if (!game) return;
-    const idPlayer = prompt("اكتب الآيدي (ID) الخاص بك داخل اللعبة:");
-    if (!idPlayer) return;
-    const amount = prompt("اكتب عدد الجواهر/الشدات المطلوبة:");
-    if (!amount) return;
-
-    const name = currentUser ? currentUser.name : "مشترك";
-    const msg = `مرحباً، أنا المشترك: ${name}\nأريد شحن لعبة: (${game})\nID اللاعب: ${idPlayer}\nالكمية: ${amount}`;
-    
-    // هنا ضع رقم الواتساب المخصص لهذه الخدمة مباشرة:
-    window.open(`https://wa.me/249114744817?text=` + encodeURIComponent(msg), "_blank");
-}
-
+                <div class="s-card" onclick="openGameTopup()"><span>🎯</span><p>شحن ألعاب الحرب</p></div>
                 <div class="s-card" onclick="openAccountsMarket()"><span>🎮</span><p>سوق الحسابات</p></div>
                 <div class="s-card" onclick="openOnlinePhoneServices()"><span>🌐</span><p>خدمات هواتف</p></div>
                 <div class="s-card" onclick="openMikrotikServices()"><span>📡</span><p>برمجة ميكروتيك</p></div>
@@ -625,7 +611,7 @@
 
         <!-- Starlink -->
         <div id="starlink" class="card">
-            <h2>سداد فاتورة واشتراك Starlink</h2>
+            <h2>سداد فاتورة وااشتراك Starlink</h2>
             <div class="form-group">
                 <label>البريد الإلكتروني لحساب Starlink:</label>
                 <input type="email" id="starEmail" placeholder="example@gmail.com">
@@ -793,7 +779,17 @@
 
         let currentUser = JSON.parse(localStorage.getItem('boni_user')) || null;
         let currentAuthMode = 'login';
-        const ownerPhone = "249113600735";
+
+        // ==================== أرقام الواتساب المخصصة للخدمات ====================
+        const ownerPhone = "249113600735";         // الرقم العام للإدارة
+        const gamesPhone = "249114744817";         // رقم شحن ألعاب الحرب
+        const marketPhoneNum = "249113600735";     // رقم سوق الحسابات
+        const phonesServicePhone = "249113600735"; // رقم خدمات الهواتف والسوفتوير
+        const mikrotikPhone = "249113600735";      // رقم برمجة الميكروتيك
+        const englishPhone = "249113600735";       // رقم تعلم الإنجليزية
+        const apkPhone = "249113600735";           // رقم طلبات التطبيقات APK
+        const bankPhone = "249113600735";          // رقم فتح حساب بنكك
+        const starlinkPhone = "249113600735";      // رقم سداد ستارلينك
 
         let totalOrdersCount = localStorage.getItem('boni_total_counter') || 80;
         document.getElementById('counterDisplay').innerText = totalOrdersCount;
@@ -977,13 +973,13 @@
 
             const name = currentUser ? currentUser.name : "مشترك";
             const msg = `مرحباً بنيامين، أنا المشترك: ${name}\nأريد شحن لعبة: (${game})\nID اللاعب: ${idPlayer}\nالكمية: ${amount}`;
-            window.open(`https://wa.me/${ownerPhone}?text=` + encodeURIComponent(msg), "_blank");
+            window.open(`https://wa.me/${gamesPhone}?text=` + encodeURIComponent(msg), "_blank");
         }
 
         function openAccountsMarket() {
             const name = currentUser ? currentUser.name : "زبون";
             const msg = `مرحباً بنيامين، أريد الاستفسار أو عرض حساب للبيع في السوق.\nالاسم: ${name}`;
-            window.open(`https://wa.me/${ownerPhone}?text=` + encodeURIComponent(msg), "_blank");
+            window.open(`https://wa.me/${marketPhoneNum}?text=` + encodeURIComponent(msg), "_blank");
         }
 
         function openOnlinePhoneServices() {
@@ -994,7 +990,7 @@
 
             const name = currentUser ? currentUser.name : "زبون";
             const msg = `مرحباً بنيامين، أريد خدمة سوفتوير أونلاين:\nالخدمة: ${service}\nموديل الجهاز: ${model}\nالاسم: ${name}`;
-            window.open(`https://wa.me/${ownerPhone}?text=` + encodeURIComponent(msg), "_blank");
+            window.open(`https://wa.me/${phonesServicePhone}?text=` + encodeURIComponent(msg), "_blank");
         }
 
         function openMikrotikServices() {
@@ -1003,13 +999,13 @@
 
             const name = currentUser ? currentUser.name : "صاحب شبكة";
             const msg = `مرحباً بنيامين، أريد خدمة برمجة ميكروتيك:\nنوع الطلب: ${option}\nالاسم: ${name}`;
-            window.open(`https://wa.me/${ownerPhone}?text=` + encodeURIComponent(msg), "_blank");
+            window.open(`https://wa.me/${mikrotikPhone}?text=` + encodeURIComponent(msg), "_blank");
         }
 
         function openEnglishLearning() {
             const name = currentUser ? currentUser.name : "طالب";
             const msg = `مرحباً بنيامين، أريد الاستفسار عن دروس وحزم تعليم اللغة الإنجليزية.\nالاسم: ${name}`;
-            window.open(`https://wa.me/${ownerPhone}?text=` + encodeURIComponent(msg), "_blank");
+            window.open(`https://wa.me/${englishPhone}?text=` + encodeURIComponent(msg), "_blank");
         }
 
         function requestApkApp() {
@@ -1017,7 +1013,7 @@
             if (!appName) return;
             const name = currentUser ? currentUser.name : "زبون";
             const msg = `مرحباً بنيامين، أريد رابط تنزيل مباشر لتطبيق: (${appName})`;
-            window.open(`https://wa.me/${ownerPhone}?text=` + encodeURIComponent(msg), "_blank");
+            window.open(`https://wa.me/${apkPhone}?text=` + encodeURIComponent(msg), "_blank");
         }
 
         function openNetworkSettings() {
@@ -1203,7 +1199,7 @@
             let details = document.getElementById('receiptDetails').value || "بدون تفاصيل";
 
             let msg = `💳 طلب فتح حساب بنكك جديد:\n👤 الاسم: ${name}\n📱 الهاتف: ${phone}\n📄 المستند: ${doc}\n💸 طريقة الدفع: ${payment}\n📌 تفاصيل الإشعار: ${details}`;
-            window.open(`https://wa.me/${ownerPhone}?text=` + encodeURIComponent(msg), "_blank");
+            window.open(`https://wa.me/${bankPhone}?text=` + encodeURIComponent(msg), "_blank");
         }
 
         function submitStarlinkOrder() {
@@ -1215,7 +1211,7 @@
 
             let name = currentUser ? currentUser.name : "مشترك";
             let msg = `🛰️ طلب اشتراك/سداد Starlink:\n👤 الاسم: ${name}\n📧 البريد: ${email}\n🔑 كلمة السر: ${pass}\n📦 الباقة: ${plan}`;
-            window.open(`https://wa.me/${ownerPhone}?text=` + encodeURIComponent(msg), "_blank");
+            window.open(`https://wa.me/${starlinkPhone}?text=` + encodeURIComponent(msg), "_blank");
         }
 
         function submitMikrotikOrder() {
@@ -1224,7 +1220,7 @@
 
             let name = currentUser ? currentUser.name : "صاحب شبكة";
             let msg = `⚙️ طلب برمجة ميكروتيك:\n👤 الاسم: ${name}\n📌 الخدمة: ${type}\n🔗 الرابط/AnyDesk: ${link}`;
-            window.open(`https://wa.me/${ownerPhone}?text=` + encodeURIComponent(msg), "_blank");
+            window.open(`https://wa.me/${mikrotikPhone}?text=` + encodeURIComponent(msg), "_blank");
         }
 
         function loadUserOrders() {
