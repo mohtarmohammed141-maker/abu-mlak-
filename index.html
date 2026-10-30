@@ -272,6 +272,19 @@
             text-align: center;
         }
 
+        .btn-whatsapp {
+            background-color: #25d366;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
         .market-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -419,7 +432,7 @@
             <button class="tab-btn" id="adminTabBtn" style="display:none; background-color:#ef4444; color:white;" onclick="switchTab('admin')">👑 الإدارة</button>
         </div>
 
-        <!-- 1. الخدمات والأيقونات -->
+        <!-- 0. الخدمات والأيقونات -->
         <div id="servicesHub" class="card active">
             <h2>قسم الخدمات السريعة والأيقونات المتاحة</h2>
             <p>اختر الخدمة المطلوبة ليتم تحويلك وإرسال طلبك مباشرة عبر الواتساب:</p>
@@ -442,24 +455,21 @@
             </div>
         </div>
 
-        <!-- 2. التطبيق والشرح -->
+        <!-- التطبيق والشرح -->
         <div id="downloadApp" class="card">
-            <h2>📲 تحميل حزمة وتطبيق "بني سنتر" (ZIP / APK)</h2>
-            <p>استمتع بتجربة أسرع عبر تثبيت التطبيق أو تحميل الحزمة البرمجية الرسمية:</p>
+            <h2>📲 تحميل تطبيق "بني سنتر" الرسمي (APK)</h2>
+            <p>استمتع بتجربة أسرع عبر تثبيت التطبيق مباشرة على هاتفك الأندرويد:</p>
 
-            <div style="text-align: center; margin: 1.2rem 0; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-                <a href="https://github.com/mohtarmohammed141-maker/abu-mlak-/raw/refs/heads/main/Beni%20Center%201.0.zip" class="btn btn-apk" style="padding: 0.8rem 1.5rem; width: auto; font-size: 0.95rem;" download>
-                    📦 تحميل حزمة المشروع (ZIP)
-                </a>
-                <a href="BoniCenter.apk" class="btn btn-apk" style="padding: 0.8rem 1.5rem; width: auto; font-size: 0.95rem;" download>
-                    ⬇️ تحميل تطبيق الأندرويد APK
+            <div style="text-align: center; margin: 1.2rem 0;">
+                <a href="https://github.com/mohtarmohammed141-maker/abu-mlak-/raw/refs/heads/main/Beni%20Center%201.0.zip" class="btn btn-apk" style="padding: 0.8rem 2rem; width: auto; font-size: 1rem;" download>
+                    ⬇️ تحميل تطبيق بني سنتر المباشر
                 </a>
             </div>
 
             <hr style="border-color: var(--border-color); margin: 1.5rem 0;">
 
-            <h3>📹 فيديو الشرح التوضيحي (خطوات التثبيت والتشغيل):</h3>
-            <p>شاهد الفيديو التالي لمعرفة طريقة التثبيت والاستخدام الكامل:</p>
+            <h3>📹 فيديو الشرح التوضيحي (خطوات التثبيت):</h3>
+            <p>شاهد الفيديو التالي لمعرفة طريقة تثبيت التطبيق:</p>
 
             <div class="video-box">
                 <video controls>
@@ -469,7 +479,7 @@
             </div>
         </div>
 
-        <!-- 3. السوق -->
+        <!-- السوق -->
         <div id="market" class="card">
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 1rem;">
                 <h2>سوق بني سنتر المفتوح حسب الولايات</h2>
@@ -535,7 +545,7 @@
             <div id="marketGrid" class="market-grid"></div>
         </div>
 
-        <!-- 4. بنكك -->
+        <!-- بنكك -->
         <div id="bank" class="card">
             <h2>خدمة فتح وتفعيل حساب "بنكك" عن بُعد</h2>
             <div class="form-group">
@@ -599,7 +609,7 @@
             <button class="btn" onclick="submitBankOrder()" style="margin-top: 1rem;">تأكيد وإرسال طلب فتح الحساب للواتساب</button>
         </div>
 
-        <!-- 5. Starlink -->
+        <!-- Starlink -->
         <div id="starlink" class="card">
             <h2>سداد فاتورة وااشتراك Starlink</h2>
             <div class="form-group">
@@ -621,7 +631,7 @@
             <button class="btn" onclick="submitStarlinkOrder()">تأكيد وإرسال طلب السداد للواتساب</button>
         </div>
 
-        <!-- 6. الميكروتك -->
+        <!-- الميكروتك -->
         <div id="mikrotik" class="card">
             <h2>إدارة وتهيئة راوتر MikroTik عن بُعد</h2>
             <div class="form-group">
@@ -639,7 +649,7 @@
             <button class="btn" onclick="submitMikrotikOrder()">إرسال طلب الميكروتك للواتساب</button>
         </div>
 
-        <!-- 7. محدد الشبكة -->
+        <!-- محدد الشبكة -->
         <div id="networkTool" class="card">
             <div style="background:rgba(15, 23, 42, 0.7); border:1px solid var(--border-color); border-radius:14px; padding:1.5rem; text-align:right;">
                 <h2 style="color:var(--accent-glow); text-align:center; margin-top:0;">محدد الشبكة والشريحة الأنسب حسب منطقتك</h2>
@@ -668,7 +678,7 @@
             </div>
         </div>
 
-        <!-- 8. التحكم عن بعد -->
+        <!-- التحكم عن بعد -->
         <div id="remoteSupport" class="card">
             <h2>بوابة الدعم والتحكم عن بُعد (خاص بـ بني سنتر)</h2>
             <p>اختر وضع الاستخدام:</p>
@@ -695,13 +705,13 @@
             </div>
         </div>
 
-        <!-- 9. طلباتي -->
+        <!-- طلباتي -->
         <div id="myOrders" class="card">
             <h2>قائمة طلباتي المسجلة</h2>
             <div id="userOrdersList">برجاء تسجيل الدخول أولاً لعرض طلباتك.</div>
         </div>
 
-        <!-- 10. الإدارة -->
+        <!-- الإدارة -->
         <div id="admin" class="card">
             <h2>لوحة تحكم المدير</h2>
             <div id="adminOrdersList">جاري جلب الطلبات من قاعدة البيانات...</div>
@@ -770,16 +780,16 @@
         let currentUser = JSON.parse(localStorage.getItem('boni_user')) || null;
         let currentAuthMode = 'login';
 
-        // أرقام الواتساب المخصصة للخدمات
-        const ownerPhone = "249113600735";
-        const gamesPhone = "249114744817";
-        const marketPhoneNum = "249113600735";
-        const phonesServicePhone = "249113600735";
-        const mikrotikPhone = "249113600735";
-        const englishPhone = "249113600735";
-        const apkPhone = "249113600735";
-        const bankPhone = "249113600735";
-        const starlinkPhone = "249113600735";
+        // ==================== أرقام الواتساب المخصصة للخدمات ====================
+        const ownerPhone = "249113600735";         // الرقم العام للإدارة
+        const gamesPhone = "249114744817";         // رقم شحن ألعاب الحرب
+        const marketPhoneNum = "249113600735";     // رقم سوق الحسابات
+        const phonesServicePhone = "249113600735"; // رقم خدمات الهواتف والسوفتوير
+        const mikrotikPhone = "249113600735";      // رقم برمجة الميكروتيك
+        const englishPhone = "249113600735";       // رقم تعلم الإنجليزية
+        const apkPhone = "249113600735";           // رقم طلبات التطبيقات APK
+        const bankPhone = "249113600735";          // رقم فتح حساب بنكك
+        const starlinkPhone = "249113600735";      // رقم سداد ستارلينك
 
         let totalOrdersCount = localStorage.getItem('boni_total_counter') || 80;
         document.getElementById('counterDisplay').innerText = totalOrdersCount;
@@ -1110,8 +1120,4 @@
                             <img src="${imgSrc}" alt="صورة المنتج" onerror="this.src='https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=300'">
                             <h3 style="margin:5px 0; font-size:15px;">${item.title}</h3>
                             <div style="font-size:11px; color:var(--text-muted); margin-bottom:5px;">👤 المزود: ${item.sellerName}</div>
-                            <p style="font-size:12px; color:var(--text-muted);">${item.desc}</p>
-                        </div>
-                        <div style="margin-top:10px;">
-                            <div style="color:var(--accent-green); font-weight:bold; font-size:13px; margin-bottom:8px;">💰 السعر: ${item.price}</div>
-                 
+                        
