@@ -438,7 +438,21 @@
             <p>اختر الخدمة المطلوبة ليتم تحويلك وإرسال طلبك مباشرة عبر الواتساب:</p>
             
             <div class="grid">
-                <div class="s-card" onclick="openGameTopup()"><span>🎯</span><p>شحن ألعاب الحرب</p></div>
+                function openGameTopup() {
+    const game = prompt("اختر اللعبة المراد شحنها:\n1- فري فاير (Free Fire)\n2- ببجي (PUBG Mobile)");
+    if (!game) return;
+    const idPlayer = prompt("اكتب الآيدي (ID) الخاص بك داخل اللعبة:");
+    if (!idPlayer) return;
+    const amount = prompt("اكتب عدد الجواهر/الشدات المطلوبة:");
+    if (!amount) return;
+
+    const name = currentUser ? currentUser.name : "مشترك";
+    const msg = `مرحباً، أنا المشترك: ${name}\nأريد شحن لعبة: (${game})\nID اللاعب: ${idPlayer}\nالكمية: ${amount}`;
+    
+    // هنا ضع رقم الواتساب المخصص لهذه الخدمة مباشرة:
+    window.open(`https://wa.me/249114744817?text=` + encodeURIComponent(msg), "_blank");
+}
+
                 <div class="s-card" onclick="openAccountsMarket()"><span>🎮</span><p>سوق الحسابات</p></div>
                 <div class="s-card" onclick="openOnlinePhoneServices()"><span>🌐</span><p>خدمات هواتف</p></div>
                 <div class="s-card" onclick="openMikrotikServices()"><span>📡</span><p>برمجة ميكروتيك</p></div>
