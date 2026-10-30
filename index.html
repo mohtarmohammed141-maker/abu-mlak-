@@ -470,8 +470,8 @@
             <p>استمتع بتجربة أسرع عبر تثبيت التطبيق مباشرة على هاتفك الأندرويد:</p>
 
             <div style="text-align: center; margin: 1.2rem 0;">
-                <a href="https://github.com/mohtarmohammed141-maker/abu-mlak-/raw/refs/heads/main/Beni%20Center%201.0.zip" class="btn btn-apk" style="padding: 0.8rem 2rem; width: auto; font-size: 1rem;" download>
-                    ⬇️ تحميل تطبيق بني سنتر المباشر
+                <a href="https://github.com/benifone/benifone.github.io/raw/main/BoniCenter.apk" class="btn btn-apk" style="padding: 0.8rem 2rem; width: auto; font-size: 1rem;" download>
+                    ⬇️ تحميل تطبيق بني سنتر APK المباشر
                 </a>
             </div>
 
@@ -1119,4 +1119,302 @@
                             <img src="${imgSrc}" alt="صورة المنتج" onerror="this.src='https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=300'">
                             <h3 style="margin:5px 0; font-size:15px;">${item.title}</h3>
                             <div style="font-size:11px; color:var(--text-muted); margin-bottom:5px;">👤 المزود: ${item.sellerName}</div>
-                            <p style="font-size:12px; color:var(--te
+                            <p style="font-size:12px; color:var(--text-muted);">${item.desc}</p>
+                        </div>
+                        <div>
+                            <div style="color:var(--accent-glow); font-weight:bold; margin:8px 0; font-size:14px;">💰 ${item.price}</div>
+                            <a href="${waUrl}" target="_blank" class="btn-whatsapp" style="width:100%; text-align:center; box-sizing:border-box;">طلب الخدمة مباشرة 💬</a>
+                        </div>
+                    </div>`;
+                });
+                grid.innerHTML = html;
+            });
+        }
+
+        const signalingServerUrl = "https://boni-remote-server.onrender.com"; 
+        let socket = null;
+        let activeRoom = "boni-" + Math.floor(Math.random() * 8999 + 1000);
+
+        function setRemoteMode(mode) {
+            if(mode === 'client') {
+                document.getElementById('clientRemoteBox').style.display = 'block';
+                document.getElementById('adminRemoteBox').style.display = 'none';
+                document.getElementById('clientModeBtn').classList.add('active');
+                document.getElementById('adminModeBtn').classList.remove('active');
+            } else {
+                document.getElementById('clientRemoteBox').style.display = 'none';
+                document.getElementById('adminRemoteBox').style.display = 'block';
+                document.getElementById('adminModeBtn').classList.add('active');
+                document.getElementById('clientModeBtn').classList.remove('active');
+            }
+        }
+
+        async function startClientSharing() {
+            try {
+                const stream = await navigator.mediaDevices.getDisplayMedia({ video: { cursor: "always" }, audio: false });
+                const videoEl = document.getElementById('localVideoPreview');
+                videoEl.style.display = 'block';
+                videoEl.srcObject = stream;
+
+                document.getElementById('clientSessionDisplay').innerHTML = `✅ تم فتح الجلسة بنجاح!<br><b>أعطِ هذا الرمز للمهندس:</b> <span style="color:#ef4444; font-size:1.1rem;">${activeRoom}</span>`;
+
+                socket = io(signalingServerUrl);
+                socket.emit('join-room', activeRoom);
+
+                const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
+                stream.getTracks().forEach(track => pc.addTrack(track, stream));
+
+                pc.onicecandidate = e => {
+                    if (e.candidate) socket.emit('ice-candidate', { candidate: e.candidate, room: activeRoom });
+                };
+
+                const offer = await pc.createOffer();
+                await pc.setLocalDescription(offer);
+                socket.emit('offer', { offer: offer, room: activeRoom });
+
+                socket.on('answer', async ans => {
+                    await pc.setRemoteDescription(new RTCSessionDescription(ans));
+                });
+
+                socket.on('ice-candidate', async cand => {
+                    await pc.addIceCandidate(new RTCIceCandidate(cand));
+                });
+
+            } catch (err) {
+                alert('تنبيه: مشاركة الشاشة المباشرة عبر المتصفح تدعم الأجهزة الداعمة. للهواتف يمكنك استخدام AnyDesk.');
+                console.error(err);
+            }
+        }
+
+        async function connectToRemoteClient() {
+            let targetRoom = document.getElementById('targetSessionInput').value;
+            if(!targetRoom) { alert('الرجاء إدخال رمز جلسة العميل'); return; }
+
+            socket = io(signalingServerUrl);
+            socket.emit('join-room', targetRoom);
+
+            const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
+
+            pc.ontrack = e => {
+                const remoteVideo = document.getElementById('remoteVideoViewer');
+                remoteVideo.srcObject = e.streams[0];
+            };
+
+            pc.onicecandidate = e => {
+                if (e.candidate) socket.emit('ice-candidate', { candidate: e.candidate, room: targetRoom });
+            };
+
+            socket.on('offer', async offer => {
+                await pc.setRemoteDescription(new RTCSessionDescription(offer));
+                const answer = await pc.createAnswer();
+                await pc.setLocalDescription(answer);
+                socket.emit('answer', { answer: answer, room: targetRoom });
+            });
+
+            socket.on('ice-candidate', async cand => {
+                await pc.addIceCandidate(new RTCIceCandidate(cand));
+            });
+
+            alert('جاري الاتصال بجهاز العميل...');
+        }
+
+        function handleBankDocChange() {
+            let doc = document.getElementById('bankDocType').value;
+            let priceBox = document.getElementById('priceInfoBox');
+            let priceText = document.getElementById('priceText');
+            let natBox = document.getElementById('nationalNumBox');
+
+            natBox.style.display = 'none';
+
+            if(doc === 'جواز سفر' || doc === 'بطاقة قومية') {
+                priceBox.style.display = 'block';
+                priceText.innerHTML = `💰 <b>سعر الخدمة:</b> 20 ألف سوداني`;
+            } else if(doc === 'رقم وطني') {
+                priceBox.style.display = 'none';
+                natBox.style.display = 'block';
+            } else {
+                priceBox.style.display = 'none';
+            }
+        }
+
+        function handleNationalStatusChange() {
+            let status = document.getElementById('nationalStatus').value;
+            let priceBox = document.getElementById('priceInfoBox');
+            let priceText = document.getElementById('priceText');
+
+            if(status === 'محدث وجاهز') {
+                priceBox.style.display = 'block';
+                priceText.innerHTML = `💰 <b>سعر الخدمة:</b> 20 ألف سوداني`;
+            } else if(status === 'يحتاج إلى تحديث') {
+                priceBox.style.display = 'block';
+                priceText.innerHTML = `💰 <b>سعر الخدمة (تحديث الرقم الوطني + فتح الحساب):</b> 120 ألف سوداني`;
+            } else {
+                priceBox.style.display = 'none';
+            }
+        }
+
+        function handlePaymentChoice() {
+            let choice = document.getElementById('paymentChoice').value;
+            let receiptBox = document.getElementById('receiptBox');
+            let agentBox = document.getElementById('agentStateBox');
+
+            receiptBox.style.display = 'none';
+            agentBox.style.display = 'none';
+
+            if(choice === 'تحويل مباشر للإدارة') {
+                receiptBox.style.display = 'block';
+            } else if(choice === 'دفع عبر وكيل الولاية') {
+                agentBox.style.display = 'block';
+            }
+        }
+
+        function saveAndSendOrder(serviceName, detailsText) {
+            if(!currentUser) {
+                alert('عذراً، يجب تسجيل حسابك أولاً لنتمكن من إتمام طلبك وتوثيقه');
+                openAuthModal('register');
+                return;
+            }
+
+            let currentCount = parseInt(localStorage.getItem('boni_total_counter')) || 80;
+            currentCount++;
+            localStorage.setItem('boni_total_counter', currentCount);
+            document.getElementById('counterDisplay').innerText = currentCount;
+
+            let orderId = 'ORD-' + Math.floor(Math.random() * 899999 + 100000);
+            let orderData = {
+                id: orderId,
+                service: serviceName,
+                details: detailsText,
+                userPhone: currentUser.phone,
+                userName: currentUser.name,
+                date: new Date().toLocaleString('ar-EG'),
+                status: 'قيد المعالجة'
+            };
+
+            db.ref('orders/' + orderId).set(orderData);
+
+            let orders = JSON.parse(localStorage.getItem('boni_orders')) || [];
+            orders.push(orderData);
+            localStorage.setItem('boni_orders', JSON.stringify(orders));
+
+            let waMsg = `📌 طلب جديد عبر بني سنتر:\n` +
+                        `🔹 رقم الطلب: ${orderId}\n` +
+                        `👤 العميل: ${currentUser.name}\n` +
+                        `📱 الهاتف: ${currentUser.phone}\n` +
+                        `⚙️ الخدمة: ${serviceName}\n` +
+                        `📝 التفاصيل: ${detailsText}`;
+
+            let waUrl = `https://wa.me/${ownerPhone}?text=` + encodeURIComponent(waMsg);
+            window.open(waUrl, '_blank');
+            switchTab('myOrders');
+        }
+
+        function processService(serviceName) {
+            alert("تنبيه: يتم الدفع عبر خدمة (بنكك) باسم: بنيامين محمد سعيد إبراهيم (رقم الحساب: 3624451).");
+            saveAndSendOrder(serviceName, "طلب عبر الأيقونات السريعة");
+        }
+
+        function submitBankOrder() {
+            let doc = document.getElementById('bankDocType').value;
+            if(!doc) { alert('اختر نوع المستند أولاً'); return; }
+
+            let details = `المستند: ${doc}`;
+            let priceVal = "20 ألف سوداني";
+
+            if(doc === 'رقم وطني') {
+                let status = document.getElementById('nationalStatus').value;
+                if(!status) { alert('اختر حالة الرقم الوطني أولاً'); return; }
+                details += ` | الحالة: ${status}`;
+                if(status === 'يحتاج إلى تحديث') {
+                    priceVal = "120 ألف سوداني";
+                }
+            }
+
+            let payChoice = document.getElementById('paymentChoice').value;
+            if(payChoice === 'مناقشة أولاً') {
+                details += ` | حالة الدفع: أريد المناقشة أولاً (بدون دفع مسبق)`;
+            } else if(payChoice === 'دفع عبر وكيل الولاية') {
+                let agentLoc = document.getElementById('agentLocation').value;
+                if(!agentLoc) { alert('الرجاء اختيار الولاية أو المنطقة للوكيل'); return; }
+                details += ` | السعر: ${priceVal} | طريقة الدفع: عبر وكيل الولاية (${agentLoc}) الحساب: 3624451 بنيامين محمد سعيد`;
+            } else {
+                let receipt = document.getElementById('receiptDetails').value;
+                if(!receipt) { alert('الرجاء إدخل تفاصيل أو رقم إشعار التحويل المباشر'); return; }
+                details += ` | السعر: ${priceVal} | حالة الدفع: تم الدفع المباشر | رقم الإشعار: ${receipt} | الحساب المحول إليه: 3624451 (بنيامين محمد سعيد إبراهيم)`;
+            }
+
+            saveAndSendOrder('فتح حساب بنكك', details);
+        }
+
+        function submitStarlinkOrder() {
+            let email = document.getElementById('starEmail').value;
+            let pass = document.getElementById('starPass').value;
+            let plan = document.getElementById('starPlan').value;
+
+            if(!email || !pass) { alert('يرجى كتابة البريد وكلمة المرور'); return; }
+            saveAndSendOrder('سداد فاتورة Starlink', `الحساب: ${email} | المرور: ${pass} | الباقة: ${plan}`);
+        }
+
+        function submitMikrotikOrder() {
+            let type = document.getElementById('mikroType').value;
+            let link = document.getElementById('mikroLink').value;
+            saveAndSendOrder('إدارة الميكروتك', `الخدمة: ${type} | الرابط: ${link || 'غير مدخل'}`);
+        }
+
+        function loadUserOrders() {
+            if(!currentUser) {
+                document.getElementById('userOrdersList').innerHTML = 'برجاء تسجيل الدخول أولاً لعرض طلباتك.';
+                return;
+            }
+
+            let orders = JSON.parse(localStorage.getItem('boni_orders')) || [];
+            let myOrders = orders.filter(o => o.userPhone === currentUser.phone);
+
+            if(myOrders.length === 0) {
+                document.getElementById('userOrdersList').innerHTML = '<p>لا توجد طلبات مسجلة باسمك حتى الآن.</p>';
+                return;
+            }
+
+            let html = '<table><thead><tr><th>رقم الطلب</th><th>الخدمة</th><th>التفاصيل</th><th>التاريخ</th><th>إرسال للواتساب</th></tr></thead><tbody>';
+            myOrders.forEach(o => {
+                let waMsg = `مرحباً، أود متابعة طلبي:\nرقم الطلب: ${o.id}\nالخدمة: ${o.service}\nالتفاصيل: ${o.details}`;
+                let waLink = `https://wa.me/${ownerPhone}?text=` + encodeURIComponent(waMsg);
+
+                html += `<tr>
+                    <td><b>${o.id}</b></td>
+                    <td>${o.service}</td>
+                    <td>${o.details}</td>
+                    <td>${o.date}</td>
+                    <td><a href="${waLink}" target="_blank" class="btn-whatsapp">إرسال للواتساب 💬</a></td>
+                </tr>`;
+            });
+            html += '</tbody></table>';
+            document.getElementById('userOrdersList').innerHTML = html;
+        }
+
+        function loadAdminOrders() {
+            db.ref('orders').once('value', (snapshot) => {
+                let data = snapshot.val();
+                if(!data) {
+                    document.getElementById('adminOrdersList').innerHTML = '<p>لا توجد طلبات في قاعدة البيانات السحابية حتى الآن.</p>';
+                    return;
+                }
+
+                let html = '<table><thead><tr><th>رقم الطلب</th><th>العميل</th><th>الهاتف</th><th>الخدمة</th><th>التفاصيل</th><th>التاريخ</th></tr></thead><tbody>';
+                Object.values(data).forEach(o => {
+                    html += `<tr>
+                        <td><b>${o.id}</b></td>
+                        <td>${o.userName}</td>
+                        <td>${o.userPhone}</td>
+                        <td>${o.service}</td>
+                        <td>${o.details}</td>
+                        <td>${o.date}</td>
+                    </tr>`;
+                });
+                html += '</table>';
+                document.getElementById('adminOrdersList').innerHTML = html;
+            });
+        }
+    </script>
+</body>
+    </html>
