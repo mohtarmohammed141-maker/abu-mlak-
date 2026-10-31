@@ -31,7 +31,6 @@
             min-height: 100vh;
         }
 
-        /* خلفية إضاءة محيطية عصرية */
         .ambient-glow {
             position: fixed;
             top: -100px;
@@ -116,6 +115,9 @@
             cursor: pointer;
             transition: all 0.25s ease;
             white-space: nowrap;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
         }
 
         .tab-btn.active, .tab-btn:hover {
@@ -139,7 +141,6 @@
             display: block;
         }
 
-        /* تنسيق شبكة الأيقونات والخدمات بشكل أنيق ومضغوط غير ضخم */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -346,7 +347,6 @@
             display: block;
         }
 
-        /* تنسيق الروبوت التفاعلي */
         .robot-container {
             text-align: center;
             margin-bottom: 12px;
@@ -427,13 +427,10 @@
             </div>
         </div>
 
-        <!-- التبويبات الرئيسية -->
+        <!-- التبويبات الرئيسية (شملت زر تحميل التطبيق بشكل متناسق) -->
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('servicesHub')">🚀 الخدمات والأيقونات</button>
-            <a href="https://github.com/mohtarmohammed141-maker/abu-mlak-/releases/download/v1.0/Beni.Center.1.0.zip" class="download-btn" download>
-    🔳 تحميل تطبيق بني سنتر
-</a>
-
+            <a href="https://github.com/mohtarmohammed141-maker/abu-mlak-/releases/download/v1.0/Beni.Center.1.0.zip" class="tab-btn" style="background: linear-gradient(135deg, #10b981, #059669); color: white; border-color: #10b981;" download>🔳 تحميل التطبيق</a>
             <button class="tab-btn" onclick="switchTab('market')">🛒 سوق الخدمات</button>
             <button class="tab-btn" onclick="switchTab('bank')">💳 فتح حساب بنكك</button>
             <button class="tab-btn" onclick="switchTab('starlink')">📡 Starlink</button>
@@ -444,7 +441,7 @@
             <button class="tab-btn" id="adminTabBtn" style="display:none; background-color:#ef4444; color:white;" onclick="switchTab('admin')">👑 الإدارة</button>
         </div>
 
-        <!-- 0. مركز الخدمات والأيقونات المرتبة بعناية -->
+        <!-- 0. مركز الخدمات والأيقونات -->
         <div id="servicesHub" class="card active">
             <h2>قسم الخدمات السريعة والأيقونات المتاحة</h2>
             <p>اختر الخدمة المطلوبة ليتم تحويلك وإرسال طلبك مباشرة عبر الواتساب:</p>
@@ -467,26 +464,24 @@
             </div>
         </div>
 
-        <!-- قسم تحميل التطبيق APK وفيديو الشرح -->
+        <!-- قسم تحميل التطبيق المباشر -->
         <div id="downloadApp" class="card">
-            <h2>📲 تحميل تطبيق "بني سنتر" الرسمي (APK)</h2>
-            <p>استمتع بتجربة أسرع عبر تثبيت التطبيق مباشرة على هاتفك الأندرويد:</p>
+            <h2>📲 تحميل تطبيق "بني سنتر" الرسمي</h2>
+            <p>استمتع بتجربة أسرع عبر تثبيت التطبيق مباشرة على هاتفك:</p>
 
             <div style="text-align: center; margin: 1.2rem 0;">
-                <a href="https://github.com/benifone/benifone.github.io/raw/main/BoniCenter.apk" class="btn btn-apk" style="padding: 0.8rem 2rem; width: auto; font-size: 1rem;" download>
-                    ⬇️ تحميل تطبيق بني سنتر APK المباشر
+                <a href="https://github.com/mohtarmohammed141-maker/abu-mlak-/releases/download/v1.0/Beni.Center.1.0.zip" class="btn btn-apk" style="padding: 0.8rem 2rem; width: auto; font-size: 1rem;" download>
+                    ⬇️ تحميل تطبيق بني سنتر المباشر
                 </a>
             </div>
 
             <hr style="border-color: var(--border-color); margin: 1.5rem 0;">
 
             <h3>📹 فيديو الشرح التوضيحي (خطوات التثبيت):</h3>
-            <p>شاهد الفيديو التالي لمعرفة طريقة تثبيت التطبيق وتجاوز قيود المصادر المجهولة:</p>
-
             <div class="video-box">
                 <video controls poster="https://images.unsplash.com/photo-1616469829941-c7200edec809?w=800">
                     <source src="فيديو_التثبيت_الخاص_بك.mp4" type="video/mp4">
-                    متصفحك لا يدعم تشغيل الفيديو المباشر. يرجى وضع ملف الفيديو بصيغة MP4 في مجلد المشروع.
+                    متصفحك لا يدعم تشغيل الفيديو المباشر.
                 </video>
             </div>
         </div>
@@ -536,7 +531,7 @@
                     <input type="text" id="marketTitle" placeholder="مثال: كروت هوتسبوت، صيانة هواتف">
                 </div>
                 <div class="form-group">
-                    <label>صورة المنتج (من الاستوديو أو الكاميرا):</label>
+                    <label>صورة المنتج:</label>
                     <input type="file" id="marketImageFile" accept="image/*" style="background: rgba(15,23,42,0.6); padding: 5px;">
                 </div>
                 <div class="form-group">
@@ -702,15 +697,13 @@
                 <button class="tab-btn" id="adminModeBtn" onclick="setRemoteMode('admin')">وضع المهندس (معاينة وعرض)</button>
             </div>
 
-            <!-- واجهة العميل -->
             <div id="clientRemoteBox">
-                <p>إذا طلب منك المهندس مشاركة شاشتك، اضغط الزر أدناه وأعطه رقم الجلسة الذي سيظهر لك:</p>
+                <p>إذا طلب منك المهندس مشاركة شاشتك، اضغط الزر أدناه وأعطه رقم الجلسة:</p>
                 <button class="btn" style="background-color: #8b5cf6; color: #fff;" onclick="startClientSharing()">بدء مشاركة الشاشة 📺</button>
                 <div id="clientSessionDisplay" style="margin-top: 12px; font-weight: bold; color: var(--accent-glow); font-size: 1rem;"></div>
                 <video id="localVideoPreview" autoplay playsinline style="width: 100%; max-height: 220px; margin-top: 10px; background: #000; display: none; border-radius: 8px;"></video>
             </div>
 
-            <!-- واجهة المدير / المهندس -->
             <div id="adminRemoteBox" style="display: none;">
                 <div class="form-group">
                     <label>أدخل رمز جلسة العميل:</label>
@@ -735,7 +728,7 @@
 
     </div>
 
-    <!-- نافذة تسجيل الدخول/إنشاء الحساب مع الروبوت التفاعلي -->
+    <!-- نافذة تسجيل الدخول/إنشاء الحساب -->
     <div id="authModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(5,7,10,0.85); backdrop-filter: blur(8px); justify-content:center; align-items:center; z-index:1000;">
         <div style="background:linear-gradient(145deg, #111827, #0f172a); border: 1px solid var(--border-color); padding: 1.8rem; border-radius: 16px; width:90%; max-width:380px; box-shadow: 0 15px 35px rgba(0,0,0,0.5);">
             
@@ -808,11 +801,13 @@
         function switchTab(tabId) {
             document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => {
-                if(!b.id.includes('adminTabBtn') && !b.id.includes('authTab')) b.classList.remove('active');
+                if(!b.id.includes('adminTabBtn') && !b.id.includes('authTab') && !b.getAttribute('download')) b.classList.remove('active');
             });
             
             document.getElementById(tabId).classList.add('active');
-            event.currentTarget.classList.add('active');
+            if(event && event.currentTarget && !event.currentTarget.getAttribute('download')) {
+                event.currentTarget.classList.add('active');
+            }
 
             if(tabId === 'market') loadMarketItems();
             if(tabId === 'myOrders') loadUserOrders();
@@ -977,7 +972,6 @@
         }
 
         function openAccountsMarket() {
-            alert("قسم سوق الحسابات جاهز للتواصل المباشر مع الإدارة.");
             const name = currentUser ? currentUser.name : "زبون";
             const msg = `مرحباً بنيامين، أريد الاستفسار أو عرض حساب للبيع في السوق.\nالاسم: ${name}`;
             window.open(`https://wa.me/${ownerPhone}?text=` + encodeURIComponent(msg), "_blank");
@@ -1004,7 +998,6 @@
         }
 
         function openEnglishLearning() {
-            alert("قسم تعليم اللغة الإنجليزية وكورسات المحادثة.");
             const name = currentUser ? currentUser.name : "طالب";
             const msg = `مرحباً بنيامين، أريد الاستفسار عن دروس وحزم تعليم اللغة الإنجليزية.\nالاسم: ${name}`;
             window.open(`https://wa.me/${ownerPhone}?text=` + encodeURIComponent(msg), "_blank");
@@ -1013,7 +1006,6 @@
         function requestApkApp() {
             const appName = prompt("اكتب اسم التطبيق أو اللعبة التي تريد رابط تنزيلها:");
             if (!appName) return;
-            const name = currentUser ? currentUser.name : "زبون";
             const msg = `مرحباً بنيامين، أريد رابط تنزيل مباشر لتطبيق: (${appName})`;
             window.open(`https://wa.me/${ownerPhone}?text=` + encodeURIComponent(msg), "_blank");
         }
@@ -1072,16 +1064,14 @@
                         toggleAddServiceForm();
                         loadMarketItems();
                     } else {
-                        alert('حدث خطأ أثناء النشر، حاول مجدداً: ' + err.message);
+                        alert('حدث خطأ أثناء النشر: ' + err.message);
                     }
                 });
             };
 
             if (fileInput.files && fileInput.files[0]) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    proceedPublish(e.target.result);
-                };
+                reader.onload = function(e) { proceedPublish(e.target.result); };
                 reader.readAsDataURL(fileInput.files[0]);
             } else {
                 proceedPublish('https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=300');
@@ -1175,17 +1165,10 @@
                 await pc.setLocalDescription(offer);
                 socket.emit('offer', { offer: offer, room: activeRoom });
 
-                socket.on('answer', async ans => {
-                    await pc.setRemoteDescription(new RTCSessionDescription(ans));
-                });
-
-                socket.on('ice-candidate', async cand => {
-                    await pc.addIceCandidate(new RTCIceCandidate(cand));
-                });
-
+                socket.on('answer', async ans => { await pc.setRemoteDescription(new RTCSessionDescription(ans)); });
+                socket.on('ice-candidate', async cand => { await pc.addIceCandidate(new RTCIceCandidate(cand)); });
             } catch (err) {
-                alert('تنبيه: مشاركة الشاشة المباشرة عبر المتصفح تدعم الأجهزة الداعمة. للهواتف يمكنك استخدام AnyDesk.');
-                console.error(err);
+                alert('تنبيه: مشاركة الشاشة المباشرة عبر المتصفح تتطلب أجهزة داعمة.');
             }
         }
 
@@ -1197,15 +1180,8 @@
             socket.emit('join-room', targetRoom);
 
             const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
-
-            pc.ontrack = e => {
-                const remoteVideo = document.getElementById('remoteVideoViewer');
-                remoteVideo.srcObject = e.streams[0];
-            };
-
-            pc.onicecandidate = e => {
-                if (e.candidate) socket.emit('ice-candidate', { candidate: e.candidate, room: targetRoom });
-            };
+            pc.ontrack = e => { document.getElementById('remoteVideoViewer').srcObject = e.streams[0]; };
+            pc.onicecandidate = e => { if (e.candidate) socket.emit('ice-candidate', { candidate: e.candidate, room: targetRoom }); };
 
             socket.on('offer', async offer => {
                 await pc.setRemoteDescription(new RTCSessionDescription(offer));
@@ -1214,10 +1190,7 @@
                 socket.emit('answer', { answer: answer, room: targetRoom });
             });
 
-            socket.on('ice-candidate', async cand => {
-                await pc.addIceCandidate(new RTCIceCandidate(cand));
-            });
-
+            socket.on('ice-candidate', async cand => { await pc.addIceCandidate(new RTCIceCandidate(cand)); });
             alert('جاري الاتصال بجهاز العميل...');
         }
 
@@ -1328,22 +1301,20 @@
                 let status = document.getElementById('nationalStatus').value;
                 if(!status) { alert('اختر حالة الرقم الوطني أولاً'); return; }
                 details += ` | الحالة: ${status}`;
-                if(status === 'يحتاج إلى تحديث') {
-                    priceVal = "120 ألف سوداني";
-                }
+                if(status === 'يحتاج إلى تحديث') { priceVal = "120 ألف سوداني"; }
             }
 
             let payChoice = document.getElementById('paymentChoice').value;
             if(payChoice === 'مناقشة أولاً') {
-                details += ` | حالة الدفع: أريد المناقشة أولاً (بدون دفع مسبق)`;
+                details += ` | حالة الدفع: أريد المناقشة أولاً`;
             } else if(payChoice === 'دفع عبر وكيل الولاية') {
                 let agentLoc = document.getElementById('agentLocation').value;
                 if(!agentLoc) { alert('الرجاء اختيار الولاية أو المنطقة للوكيل'); return; }
-                details += ` | السعر: ${priceVal} | طريقة الدفع: عبر وكيل الولاية (${agentLoc}) الحساب: 3624451 بنيامين محمد سعيد`;
+                details += ` | السعر: ${priceVal} | طريقة الدفع: عبر وكيل الولاية (${agentLoc})`;
             } else {
                 let receipt = document.getElementById('receiptDetails').value;
-                if(!receipt) { alert('الرجاء إدخل تفاصيل أو رقم إشعار التحويل المباشر'); return; }
-                details += ` | السعر: ${priceVal} | حالة الدفع: تم الدفع المباشر | رقم الإشعار: ${receipt} | الحساب المحول إليه: 3624451 (بنيامين محمد سعيد إبراهيم)`;
+                if(!receipt) { alert('الرجاء إدخال تفاصيل أو رقم إشعار التحويل المباشر'); return; }
+                details += ` | السعر: ${priceVal} | رقم الإشعار: ${receipt} (حساب: 3624451 بنيامين محمد سعيد)`;
             }
 
             saveAndSendOrder('فتح حساب بنكك', details);
@@ -1355,7 +1326,7 @@
             let plan = document.getElementById('starPlan').value;
 
             if(!email || !pass) { alert('يرجى كتابة البريد وكلمة المرور'); return; }
-            saveAndSendOrder('سداد فاتورة Starlink', `الحساب: ${email} | المرور: ${pass} | الباقة: ${plan}`);
+            saveAndSendOrder('سداد فاتورة Starlink', `الحساب: ${email} | الباقة: ${plan}`);
         }
 
         function submitMikrotikOrder() {
@@ -1380,7 +1351,7 @@
 
             let html = '<table><thead><tr><th>رقم الطلب</th><th>الخدمة</th><th>التفاصيل</th><th>التاريخ</th><th>إرسال للواتساب</th></tr></thead><tbody>';
             myOrders.forEach(o => {
-                let waMsg = `مرحباً، أود متابعة طلبي:\nرقم الطلب: ${o.id}\nالخدمة: ${o.service}\nالتفاصيل: ${o.details}`;
+                let waMsg = `مرحباً، أود متابعة طلبي:\nرقم الطلب: ${o.id}\nالخدمة: ${o.service}`;
                 let waLink = `https://wa.me/${ownerPhone}?text=` + encodeURIComponent(waMsg);
 
                 html += `<tr>
@@ -1399,7 +1370,7 @@
             db.ref('orders').once('value', (snapshot) => {
                 let data = snapshot.val();
                 if(!data) {
-                    document.getElementById('adminOrdersList').innerHTML = '<p>لا توجد طلبات في قاعدة البيانات السحابية حتى الآن.</p>';
+                    document.getElementById('adminOrdersList').innerHTML = '<p>لا توجد طلبات في قاعدة البيانات حتى الآن.</p>';
                     return;
                 }
 
@@ -1420,4 +1391,4 @@
         }
     </script>
 </body>
-    </html>
+</html>
